@@ -27,18 +27,18 @@ steps:
     publishLocation: 'Container'
 
 
-jobs:
-
-- job: 'Test_Linux'
-  pool:
-    vmImage: 'Ubuntu-16.04'
-  strategy:
-    matrix:
-      Python36:
-        python.version: '3.6'
-      Python37:
-        python.version: '3.7'
-    maxParallel: 2
+#jobs:
+#
+#- job: 'Test_Linux'
+#  pool:
+#    vmImage: 'Ubuntu-16.04'
+#  strategy:
+#    matrix:
+#      Python36:
+#        python.version: '3.6'
+#      Python37:
+#        python.version: '3.7'
+#    maxParallel: 2
 
   steps:
   - task: UsePythonVersion@0
