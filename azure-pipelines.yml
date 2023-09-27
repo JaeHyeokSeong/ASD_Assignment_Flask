@@ -49,6 +49,14 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
+- script: python -m pip install --upgrade pip
+  displayName: 'Upgrade Pip'
+
+- script: |
+    python -m pip install -r requirements.txt
+    # Replace 'requirements.txt' with the actual file containing your dependencies
+  displayName: 'Install Dependencies'
+
 - script: python -m unittest test_my_code.py
   displayName: 'Run Python Tests'
 
