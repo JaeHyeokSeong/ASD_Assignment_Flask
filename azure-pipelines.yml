@@ -1,69 +1,38 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
 trigger:
 - '*'
 
-pr: none
-
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: ubuntu-latest
 
-stages:
-- stage: Build
-  jobs:
-  - job: BuildJob
-    displayName: 'Build and Test'
-    steps:
-    - script: echo 'Hello, world!'
-      displayName: 'Run a one-line script'
+steps:
 
-    - script: |
-        echo Add other tasks to build, test, and deploy your project.
-        echo See https://aka.ms/yaml
-      displayName: 'Run a multi-line script'
+- task: CopyFiles@2
+  inputs:
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
 
-    - task: CopyFiles@2
-      inputs:
-        sourceFolder: '$(System.DefaultWorkingDirectory)'
-        contents: '**'
-        targetFolder: '$(Build.ArtifactStagingDirectory)'
+- script: |
+    pip install pytest
+    pip install pytest-cov
+    pip install flask
+  displayName: 'Install modules'
 
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
+- script: |
+    cd $(Build.Repository.LocalPath)
+    python -m pytest $(Build.Repository.LocalPath)/*test.py --junitxml=test-unit.xml
+  displayName: 'Run Unit Tests'
 
-- stage: Test
-  jobs:
-  - job: TestJob
-    displayName: 'Run Python Tests'
-    steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '3.x'
-        addToPath: true
-
-    - script: python -m pip install --upgrade pip
-      displayName: 'Upgrade Pip'
-
-    - script: |
-        python -m pip install -r requirements.txt
-        # Replace 'requirements.txt' with the actual file containing your dependencies
-      displayName: 'Install Dependencies'
-
-    - script: |
-        python -m pip install nose2 nose2[plugins]
-      displayName: 'Install nose2 and plugins'
-
-    - script: |
-        nose2 -v --junit-xml junit.xml
-
-      displayName: 'Run Python Tests with nose2'
-
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFiles: 'junit.xml'
-        testRunTitle: 'Python Tests'
-        testRunSystem: 'nose2'
-
-
-
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: 'test-unit.xml'
+  condition: always()
