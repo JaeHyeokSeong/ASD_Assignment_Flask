@@ -53,19 +53,58 @@ steps:
   displayName: 'Upgrade Pip'
 
 - script: |
-    python -m pip install -r ./requirements.txt
+    python -m pip install -r requirements.txt
     # Replace 'requirements.txt' with the actual file containing your dependencies
   displayName: 'Install Dependencies'
 
 - script: |
-    cat user_handling_test.py  # Print the content of user_handling_test.py
-  displayName: 'Print user_handling_test.py'
+    python -m pip install nose2 nose2[plugins]
+  displayName: 'Install nose2 and plugins'
 
-- script: python -m unittest user_handling_test.py
-  displayName: 'Run Python Tests'
+- script: |
+    python -m nose2 -v --plugin nose2.plugins.junitxml
+  displayName: 'Run Python Tests with nose2'
 
 - task: PublishTestResults@2
   inputs:
-    testResultsFiles: '**/test_results.xml' # Replace with the correct path to your test results file
+    testResultsFiles: '**/test-reports/junit.xml' # Adjust the path to your junit.xml file
     testRunTitle: 'Python Tests'
-    testRunSystem: 'Python unittest'
+    testRunSystem: 'nose2'
+
+jobs:
+
+- job: 'Test_Linux'
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  strategy:
+    matrix:
+      Python36:
+        python.version: '3.6'
+      Python37:
+        python.version: '3.7'
+    maxParallel: 2
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+      architecture: 'x64'
+
+  - script: |
+      python -m pip install --upgrade pip
+      pip install -r requirements.txt
+    displayName: 'Install dependencies'
+
+  - script: |
+      python -m pip install nose2 nose2[plugins]
+    displayName: 'Install nose2 and plugins'
+
+  - script: |
+      python -m nose2 -v --plugin nose2.plugins.junitxml
+    displayName: 'Run tests'
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFiles: '**/test-reports/junit.xml' # Adjust the path to your junit.xml file
+      testRunTitle: 'Python $(python.version)'
+    condition: succeededOrFailed()
