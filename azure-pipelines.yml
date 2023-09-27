@@ -1,7 +1,28 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+#IMPORTANT WORKING
+#trigger:
+#- '*'
+#
+#pool:
+#  vmImage: ubuntu-latest
+#
+#steps:
+#- script: echo Hello, world!
+#  displayName: 'Run a one-line script'
+#
+#- script: |
+#    echo Add other tasks to build, test, and deploy your project.
+#    echo See https://aka.ms/yaml
+#  displayName: 'Run a multi-line script'
+#- task: CopyFiles@2
+#  inputs:
+#    targetFolder: '$(Build.ArtifactStagingDirectory)'
+#- task: PublishBuildArtifacts@1
+#  inputs:
+#    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#    ArtifactName: 'drop'
+#    publishLocation: 'Container'
+
+
 
 trigger:
 - '*'
@@ -17,47 +38,22 @@ steps:
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
+
 - task: CopyFiles@2
   inputs:
     targetFolder: '$(Build.ArtifactStagingDirectory)'
+
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
+- script: python -m unittest test_my_code.py
+  displayName: 'Run Python Tests'
 
-#jobs:
-#
-#- job: 'Test_Linux'
-#  pool:
-#    vmImage: 'Ubuntu-16.04'
-#  strategy:
-#    matrix:
-#      Python36:
-#        python.version: '3.6'
-#      Python37:
-#        python.version: '3.7'
-#    maxParallel: 2
-
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '$(python.version)'
-      architecture: 'x64'
-
-  - script: |
-      python -m pip install --upgrade pip
-      pip install -r requirements.txt
-    displayName: 'Install dependencies'
-
-  - script: |
-      pip install nose2
-      nose2 --plugin nose2.plugins.junitxml --junit-xml user_handling_test.py
-    displayName: 'Run tests'
-
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFiles: '**/nose2-junit.xml'
-      testRunTitle: 'Python $(python.version)'
-    condition: succeededOrFailed()
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/test_results.xml' # Replace with the correct path to your test results file
+    testRunTitle: 'Python Tests'
+    testRunSystem: 'Python unittest'
