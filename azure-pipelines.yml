@@ -55,7 +55,7 @@ stages:
       displayName: 'Install nose2 and plugins'
 
     - script: |
-        python -m nose2 -v
+        nose2 -v --plugin nose2.plugins.junitxml --junit-xml junit.xml
       displayName: 'Run Python Tests with nose2'
 
     - task: PublishTestResults@2
