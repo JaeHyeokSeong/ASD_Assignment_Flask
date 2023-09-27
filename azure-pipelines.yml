@@ -1,110 +1,65 @@
-#IMPORTANT WORKING
-#trigger:
-#- '*'
-#
-#pool:
-#  vmImage: ubuntu-latest
-#
-#steps:
-#- script: echo Hello, world!
-#  displayName: 'Run a one-line script'
-#
-#- script: |
-#    echo Add other tasks to build, test, and deploy your project.
-#    echo See https://aka.ms/yaml
-#  displayName: 'Run a multi-line script'
-#- task: CopyFiles@2
-#  inputs:
-#    targetFolder: '$(Build.ArtifactStagingDirectory)'
-#- task: PublishBuildArtifacts@1
-#  inputs:
-#    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-#    ArtifactName: 'drop'
-#    publishLocation: 'Container'
-
-
-
 trigger:
 - '*'
 
+pr: none
+
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    displayName: 'Build and Test'
+    steps:
+    - script: echo 'Hello, world!'
+      displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    - script: |
+        echo Add other tasks to build, test, and deploy your project.
+        echo See https://aka.ms/yaml
+      displayName: 'Run a multi-line script'
 
-- task: CopyFiles@2
-  inputs:
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: CopyFiles@2
+      inputs:
+        sourceFolder: '$(System.DefaultWorkingDirectory)'
+        contents: '**'
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
 
-- script: python -m pip install --upgrade pip
-  displayName: 'Upgrade Pip'
+- stage: Test
+  jobs:
+  - job: TestJob
+    displayName: 'Run Python Tests'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.x'
+        addToPath: true
 
-- script: |
-    python -m pip install -r requirements.txt
-    # Replace 'requirements.txt' with the actual file containing your dependencies
-  displayName: 'Install Dependencies'
+    - script: python -m pip install --upgrade pip
+      displayName: 'Upgrade Pip'
 
-- script: |
-    python -m pip install nose2 nose2[plugins]
-  displayName: 'Install nose2 and plugins'
+    - script: |
+        python -m pip install -r requirements.txt
+        # Replace 'requirements.txt' with the actual file containing your dependencies
+      displayName: 'Install Dependencies'
 
-- script: |
-    python -m nose2 -v --plugin nose2.plugins.junitxml
-  displayName: 'Run Python Tests with nose2'
+    - script: |
+        python -m pip install nose2 nose2[plugins]
+      displayName: 'Install nose2 and plugins'
 
-- task: PublishTestResults@2
-  inputs:
-    testResultsFiles: '**/test-reports/junit.xml' # Adjust the path to your junit.xml file
-    testRunTitle: 'Python Tests'
-    testRunSystem: 'nose2'
+    - script: |
+        python -m nose2 -v --plugin nose2.plugins.junitxml
+      displayName: 'Run Python Tests with nose2'
 
-jobs:
-
-- job: 'Test_Linux'
-  pool:
-    vmImage: 'Ubuntu-16.04'
-  strategy:
-    matrix:
-      Python36:
-        python.version: '3.6'
-      Python37:
-        python.version: '3.7'
-    maxParallel: 2
-
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '$(python.version)'
-      architecture: 'x64'
-
-  - script: |
-      python -m pip install --upgrade pip
-      pip install -r requirements.txt
-    displayName: 'Install dependencies'
-
-  - script: |
-      python -m pip install nose2 nose2[plugins]
-    displayName: 'Install nose2 and plugins'
-
-  - script: |
-      python -m nose2 -v --plugin nose2.plugins.junitxml
-    displayName: 'Run tests'
-
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFiles: '**/test-reports/junit.xml' # Adjust the path to your junit.xml file
-      testRunTitle: 'Python $(python.version)'
-    condition: succeededOrFailed()
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFiles: '**/test-reports/junit.xml'
+        testRunTitle: 'Python Tests'
+        testRunSystem: 'nose2'
