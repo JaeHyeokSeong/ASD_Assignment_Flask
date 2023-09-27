@@ -57,7 +57,11 @@ steps:
     # Replace 'requirements.txt' with the actual file containing your dependencies
   displayName: 'Install Dependencies'
 
-- script: python -m unittest test_my_code.py
+- script: |
+    cat user_handling_test.py  # Print the content of user_handling_test.py
+  displayName: 'Print user_handling_test.py'
+
+- script: python -m unittest user_handling_test.py
   displayName: 'Run Python Tests'
 
 - task: PublishTestResults@2
