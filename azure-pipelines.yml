@@ -54,12 +54,12 @@ stages:
         python -m pip install nose2 nose2[plugins]
       displayName: 'Install nose2 and plugins'
 
-    - script: |
-        python -m nose2 -v --plugin nose2.plugins.junitxml
-      displayName: 'Run Python Tests with nose2'
+- script: |
+    python -m nose2 -v --plugin nose2.plugins.junitxml --junit-xml junit.xml
+  displayName: 'Run Python Tests with nose2'
 
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFiles: '**/test-reports/junit.xml'
-        testRunTitle: 'Python Tests'
-        testRunSystem: 'nose2'
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: 'junit.xml'
+    testRunTitle: 'Python Tests'
+    testRunSystem: 'nose2'
