@@ -53,7 +53,7 @@ steps:
   displayName: 'Upgrade Pip'
 
 - script: |
-    python -m pip install -r requirements.txt
+    python -m pip install -r ./requirements.txt
     # Replace 'requirements.txt' with the actual file containing your dependencies
   displayName: 'Install Dependencies'
 
