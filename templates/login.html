@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/login.css">
+    <title>Property Management</title>
+    <style>
+        /* Add a class for selected user type button */
+        .selected-user-type {
+            background-color: #007BFF; /* Background color when selected */
+            border-color: #007BFF !important; /* Border color when selected */
+            color: #fff !important; /* Text color when selected */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Property Management</h1>
+    <div class="buttons">
+        <button class="user-type-button" data-type="tenant">Tenant</button>
+        <button class="user-type-button" data-type="agent">Agent</button>
+        <button class="user-type-button" data-type="landlord">Landlord</button>
+    </div>
+    <form class="login-form">
+        <input type="text" id="email" name="email" placeholder="Email" required>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+        <div class="button-container">
+            <a class="password-reset" href="#">Forgot your password?</a>
+            <button class="login-button" id="login-button">Login</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // JavaScript to handle user type selection and login button click events
+    const loginButton = document.getElementById("login-button");
+    const tenantButton = document.querySelector("[data-type='tenant']");
+    const agentButton = document.querySelector("[data-type='agent']");
+    const landlordButton = document.querySelector("[data-type='landlord']");
+
+    // Function to highlight the selected user type button
+    function highlightUserTypeButton(button) {
+        tenantButton.classList.remove("selected-user-type");
+        agentButton.classList.remove("selected-user-type");
+        landlordButton.classList.remove("selected-user-type");
+
+        button.classList.add("selected-user-type");
+    }
+
+    tenantButton.addEventListener("click", function () {
+        highlightUserTypeButton(tenantButton);
+    });
+
+    agentButton.addEventListener("click", function () {
+        highlightUserTypeButton(agentButton);
+    });
+
+    landlordButton.addEventListener("click", function () {
+        highlightUserTypeButton(landlordButton);
+    });
+
+    loginButton.addEventListener("click", function (e) {
+        e.preventDefault(); // Prevent the form from submitting
+
+        // Redirect to the appropriate login page based on the selected user type
+        if (tenantButton.classList.contains("selected-user-type")) {
+            window.location.href = "tenantHome.html";
+        } else if (agentButton.classList.contains("selected-user-type")) {
+            window.location.href = "agentHome.html";
+        } else if (landlordButton.classList.contains("selected-user-type")) {
+            window.location.href = "landlordHome.html";
+        }
+    });
+</script>
+
+</body>
+</html>
