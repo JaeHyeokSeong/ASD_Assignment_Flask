@@ -14,40 +14,32 @@ stages:
   jobs:
   - job: BuildJob
     displayName: 'Build and Test'
-
-steps:
-
-- task: CopyFiles@2
-  inputs:
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    steps:
+    - task: CopyFiles@2
+      inputs:
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
 
 - stage: Test
   jobs:
   - job: TestJob
     displayName: 'Run Python Tests'
     steps:
-
-
-
-
-- script: |
-    pip install pytest
-    pip install pytest-cov
-    pip install flask
-  displayName: 'Install modules'
-
-- script: |
-    cd $(Build.Repository.LocalPath)
-    python -m pytest $(Build.Repository.LocalPath)/*test.py --junitxml=test-unit.xml
-  displayName: 'Run Unit Tests'
-
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: 'test-unit.xml'
-  condition: always()
+    - script: |
+        pip install pytest
+        pip install pytest-cov
+        pip install flask
+      displayName: 'Install modules'
+    - script: |
+        cd $(Build.Repository.LocalPath)
+        python -m pytest $(Build.Repository.LocalPath)/*test.py --junitxml=test-unit.xml
+      displayName: 'Run Unit Tests'
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: 'test-unit.xml'
+      condition: always()
