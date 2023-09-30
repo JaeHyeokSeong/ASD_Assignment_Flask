@@ -4,3 +4,4 @@ lib
 pyvenv.cfg
 .idea
 __pycache__/
+database_info
