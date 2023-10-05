@@ -1,33 +1,45 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
 trigger:
-- '*'
+- master
 
 pool:
   vmImage: ubuntu-latest
 
-steps:
+stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    displayName: 'Build and Test'
+    steps:
+    - task: CopyFiles@2
+      inputs:
+        targetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
 
-- task: CopyFiles@2
-  inputs:
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-
-- script: |
-    pip install pytest
-    pip install pytest-cov
-    pip install flask
-  displayName: 'Install modules'
-
-- script: |
-    cd $(Build.Repository.LocalPath)
-    python -m pytest $(Build.Repository.LocalPath)/*test.py --junitxml=test-unit.xml
-  displayName: 'Run Unit Tests'
-
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: 'test-unit.xml'
-  condition: always()
+- stage: Test
+  jobs:
+  - job: TestJob
+    displayName: 'Run Python Tests'
+    steps:
+    - script: |
+        pip install pytest
+        pip install pytest-cov
+        pip install flask
+      displayName: 'Install modules'
+    - script: |
+        cd $(Build.Repository.LocalPath)
+        python -m pytest $(Build.Repository.LocalPath)/*test.py --junitxml=test-unit.xml
+      displayName: 'Run Unit Tests'
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: 'test-unit.xml'
+      condition: always()

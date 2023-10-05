@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>You are logged in as {{ session['user_type'] }}!</h1>
+    <p>Your User ID: {{ session['user_id'] }}</p>
+
+{#    <p>#}
+{#    <br>#}
+{#    To retrieve session: <br>#}
+{#    <br>#}
+{#    user_id = session['user_id'] <br>#}
+{#    user_type = session['user_type'] <br>#}
+{#    <br>#}
+{#    ID is the primary key will help to retrieve all other information from Database.#}
+{#    </p>#}
+
+
+
+{% endblock %}
+

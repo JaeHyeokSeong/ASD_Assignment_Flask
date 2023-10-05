@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    table {
+        width: 80%; /* Set the table width */
+        margin: 0 auto; /* Center the table on the page */
+    }
+
+    td {
+        padding-right: 40px; /* Add more space between columns */
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"] {
+        width: 250px; /* Set the input field width */
+        padding: 8px; /* Add padding for better appearance */
+        margin-bottom: 10px; /* Add space between input fields */
+    }
+
+    button {
+        padding: 10px 20px; /* Add padding to the button */
+        font-size: 16px; /* Set the font size */
+    }
+</style>
+
+<form action="/profile" method="POST">
+    <h1>User Information</h1>
+    <table>
+        <tr>
+            <td><strong>Name:</strong></td>
+            <td>{{ name }}</td>
+            <td><input type="text" name="name" placeholder="Enter new name"></td>
+        </tr>
+        <tr>
+            <td><strong>Email:</strong></td>
+            <td>{{ email }}</td>
+            <td><input type="email" name="email" placeholder="Enter new email"></td>
+        </tr>
+        <tr>
+            <td><strong>Phone:</strong></td>
+            <td>{{ phone }}</td>
+            <td><input type="tel" name="phone" placeholder="Enter new phone"></td>
+        </tr>
+        <tr>
+            <td><strong>Password:</strong></td>
+            <td>********</td>
+            <td><input type="password" name="password" placeholder="Enter new password"></td>
+        </tr>
+        <tr>
+            <td colspan="3"><button type="submit">Update Information</button></td>
+        </tr>
+    </table>
+</form>
+
+{% endblock %}
