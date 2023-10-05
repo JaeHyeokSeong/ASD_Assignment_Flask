@@ -1,10 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>This is Homepage! Aljonn was here!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Management System</title>
+    <style>
+        body {
+            font-family: Helvetica, sans-serif;
+            background-color: #7AD7F0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 500px;
+            height: 200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .welcome-message {
+            font-size: 45px;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            margin-bottom: 40px;
+        }
+
+        .buttons a {
+            text-decoration: none;
+            background-color: #555;
+            color: #fff;
+            border-radius: 5px;
+            padding: 15px;
+            display: inline-block;
+            width: 200px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .buttons a:hover {
+            background-color: #777;
+        }
+    </style>
 </head>
+
 <body>
-  <h1>WELCOME</h1>
+    <div class="container">
+        <div class="welcome-message">WELCOME</div>
+        <div class="buttons">
+            <a href="/register">Register</a>
+            <a href="/login">Login</a>
+        </div>
+    </div>
 </body>
-</html>
+
+</html

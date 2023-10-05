@@ -1,78 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/login.css">
     <title>Property Management</title>
     <style>
-        /* Add a class for selected user type button */
-        .selected-user-type {
-            background-color: #007BFF; /* Background color when selected */
-            border-color: #007BFF !important; /* Border color when selected */
-            color: #fff !important; /* Text color when selected */
-        }
+body {
+    font-family: Helvetica, sans-serif;
+    background-color: #7AD7F0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.error-message {
+    color: #ff0000;
+    margin-bottom: 10px;
+}
+
+.user-type-button {
+    background-color: #777;
+    color: #fff;
+    border: 3px solid #777;
+    border-radius: 5px;
+    padding: 10px 20px;
+    width: 110px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.user-type-button:hover {
+    background-color: #555;
+    border-color: #555;
+}
+
+.selected-user-type {
+    background-color: #555;
+    color: #555;
+    border: 3px solid #555;
+}
+
+.selected-user-type:hover {
+    background-color: #555;
+
+}
+
+.login-button {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #398034;
+}
+
+
+
+
+.input-container input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.password-reset {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+
     </style>
 </head>
+
 <body>
-<div class="container">
-    <h1>Property Management</h1>
-    <div class="buttons">
-        <button class="user-type-button" data-type="tenant">Tenant</button>
-        <button class="user-type-button" data-type="agent">Agent</button>
-        <button class="user-type-button" data-type="landlord">Landlord</button>
-    </div>
-    <form class="login-form">
-        <input type="text" id="email" name="email" placeholder="Email" required>
-        <input type="password" id="password" name="password" placeholder="Password" required>
-        <div class="button-container">
-            <a class="password-reset" href="#">Forgot your password?</a>
-            <button class="login-button" id="login-button">Login</button>
+    <div class="container">
+        <h1>Property Management</h1>
+        <div class="error-message">
+            {% if error %}
+                {{ error }}
+            {% endif %}
         </div>
-    </form>
-</div>
+        <div class="buttons">
+            <button class="user-type-button" data-type="tenant">Tenant</button>
+            <button class="user-type-button" data-type="agent">Agent</button>
+            <button class="user-type-button" data-type="landlord">Landlord</button>
+        </div>
+        <br>
+        <form id="login-form" action="/login" method="post">
+            <div class="input-container">
+                <input type="text" id="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="input-container">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+            </div>
+            <!-- Add a hidden input field for user type -->
+            <input type="hidden" id="userType" name="userType">
+            <br>
+            <div class="button-container">
+                <a class="password-reset" href="/register">Register</a>
+                <button class="login-button" id="login-button">Login</button>
+            </div>
+        </form>
+    </div>
 
 <script>
-    // JavaScript to handle user type selection and login button click events
-    const loginButton = document.getElementById("login-button");
-    const tenantButton = document.querySelector("[data-type='tenant']");
-    const agentButton = document.querySelector("[data-type='agent']");
-    const landlordButton = document.querySelector("[data-type='landlord']");
+    // JavaScript to handle user type selection and form submission
+const loginButton = document.getElementById("login-button");
+const tenantButton = document.querySelector("[data-type='tenant']");
+const agentButton = document.querySelector("[data-type='agent']");
+const landlordButton = document.querySelector("[data-type='landlord']");
+const userTypeInput = document.getElementById("userType");
 
-    // Function to highlight the selected user type button
-    function highlightUserTypeButton(button) {
-        tenantButton.classList.remove("selected-user-type");
-        agentButton.classList.remove("selected-user-type");
-        landlordButton.classList.remove("selected-user-type");
+tenantButton.addEventListener("click", function () {
+    userTypeInput.value = "tenant";
+    highlightUserTypeButton(tenantButton);
+});
 
-        button.classList.add("selected-user-type");
-    }
+agentButton.addEventListener("click", function () {
+    userTypeInput.value = "agent";
+    highlightUserTypeButton(agentButton);
+});
 
-    tenantButton.addEventListener("click", function () {
-        highlightUserTypeButton(tenantButton);
-    });
+landlordButton.addEventListener("click", function () {
+    userTypeInput.value = "landlord";
+    highlightUserTypeButton(landlordButton);
+});
 
-    agentButton.addEventListener("click", function () {
-        highlightUserTypeButton(agentButton);
-    });
+function highlightUserTypeButton(button) {
+    tenantButton.classList.remove("selected-user-type");
+    agentButton.classList.remove("selected-user-type");
+    landlordButton.classList.remove("selected-user-type");
 
-    landlordButton.addEventListener("click", function () {
-        highlightUserTypeButton(landlordButton);
-    });
+    button.classList.add("selected-user-type");
+    // Set text color to black when the button is selected
+    button.style.color = "#fff";
+}
 
-    loginButton.addEventListener("click", function (e) {
-        e.preventDefault(); // Prevent the form from submitting
+// Form submission using JavaScript
+loginButton.addEventListener("click", function (e) {
+    // Prevent the form from submitting normally
+    e.preventDefault();
+    // Submit the form using JavaScript
+    document.getElementById("login-form").submit();
+});
 
-        // Redirect to the appropriate login page based on the selected user type
-        if (tenantButton.classList.contains("selected-user-type")) {
-            window.location.href = "tenantHome.html";
-        } else if (agentButton.classList.contains("selected-user-type")) {
-            window.location.href = "agentHome.html";
-        } else if (landlordButton.classList.contains("selected-user-type")) {
-            window.location.href = "landlordHome.html";
-        }
-    });
 </script>
 
+
+
+
 </body>
+
 </html>
