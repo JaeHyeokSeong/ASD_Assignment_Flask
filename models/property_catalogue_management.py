@@ -11,7 +11,6 @@ class PropertyCatalogue:
 
     def __init__(self):
         self.python_db = None
-        self.cursor = None
 
     def connect_db(self):
         self.python_db = pymysql.connect(
@@ -21,19 +20,16 @@ class PropertyCatalogue:
             db='python_db',
             charset='utf8'
         )
-
-    def connect_cursor(self):
-        self.connect_db()
-        self.cursor = self.python_db.cursor(pymysql.cursors.DictCursor)
-        return self.cursor
+        return self.python_db
 
     def add_property(self, landlord_id, agent_id, tenant_id, address, price, description, status):
         sql = f'insert into {PropertyCatalogue.table} values (null, {landlord_id}, {agent_id}, ' \
               f'{tenant_id}, "{address}", {price}, "{description}", {status});'
 
-        with self.connect_cursor() as cs:
-            cs.execute(sql)
-            self.python_db.commit()
+        with self.connect_db() as db:
+            with db.cursor(pymysql.cursors.DictCursor) as cs:
+                cs.execute(sql)
+                db.commit()
 
     def find_property(self):
         pass
