@@ -153,8 +153,8 @@ def add_properties():
             property_status = 1
 
         # add upper values into database
-        proCatal = PropertyCatalogue()
-        proCatal.add_property(
+        prop_catal = PropertyCatalogue()
+        prop_catal.add_property(
             landlord_id=landlord_id,
             agent_id=agent_id,
             tenant_id=tenant_id,
@@ -169,7 +169,10 @@ def add_properties():
 
 @app.route('/properties/list')
 def list_properties():
+    prop_catal = PropertyCatalogue()
+
     return render_template('list_property.html')
+
 
 @app.route('/leases')
 def leases():
