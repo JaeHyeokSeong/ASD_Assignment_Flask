@@ -1,5 +1,32 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 
 {% block content %}
 <h1>Property List</h1>
+
+<form action="{{url_for('list_properties')}}", method="post">
+    <input type="text" name="search_keywords" placeholder="Search Property">
+    <input type="submit" value="Search Address">
+</form>
+<table border="1">
+    <th>Property ID</th>
+    <th>Landlord ID</th>
+    <th>Agent ID</th>
+    <th>Tenant ID</th>
+    <th>Address</th>
+    <th>Price</th>
+    <th>Description</th>
+    <th>Status (1: rented or 0: empty)</th>
+    {% for property in all_properties %}
+        <tr>
+            <td>{{property['property_id']}}</td>
+            <td>{{property['landlord_id']}}</td>
+            <td>{{property['agent_id']}}</td>
+            <td>{{property['tenant_id']}}</td>
+            <td>{{property['address']}}</td>
+            <td>{{property['price']}}</td>
+            <td>{{property['description']}}</td>
+            <td>{{property['status']}}</td>
+        </tr>
+    {% endfor %}
+</table>
 {% endblock %}

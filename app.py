@@ -132,7 +132,16 @@ def properties():
 @app.route('/properties/add/', methods=['GET', 'POST'])
 def add_properties():
     if request.method == 'GET':
-        return render_template('add_property.html')
+        user_id = session['user_id']
+        user_type = session['user_type']
+
+        # only agent can add properties
+        if user_type == 'agent':
+            return render_template('add_property.html', agent_id=user_id)
+        elif user_type == 'landlord':
+            return redirect(url_for('landlord_properties'))
+        else:
+            return redirect(url_for('tenant_properties'))
     else:
         landlord_id = request.form['landlord_id']
         agent_id = request.form['agent_id']
@@ -167,11 +176,28 @@ def add_properties():
         return redirect(url_for('properties'))
 
 
-@app.route('/properties/list')
+@app.route('/properties/list/', methods=['GET', 'POST'])
 def list_properties():
-    prop_catal = PropertyCatalogue()
+    user_id = session['user_id']
+    user_type = session['user_type']
 
-    return render_template('list_property.html')
+    if request.method == 'GET':
+        # only agent can access this page
+        if user_type != 'agent':
+            if user_type == 'landlord':
+                redirect(url_for('landlord_properties'))
+            else:
+                redirect(url_for('tenant_properties'))
+
+        prop_catal = PropertyCatalogue()
+        all_properties = prop_catal.find_all_properties_by_agent(agent_id=user_id)
+
+        return render_template('list_property.html', all_properties=all_properties)
+    else:
+        address = request.form['search_keywords']
+        prop_catal = PropertyCatalogue()
+        all_properties = prop_catal.search_property_by_address_agent(address=address, agent_id=user_id)
+        return render_template('list_property.html', all_properties=all_properties)
 
 
 @app.route('/leases')
