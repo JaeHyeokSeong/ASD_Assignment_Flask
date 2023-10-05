@@ -125,7 +125,7 @@ def contacts():
 @app.route('/properties')
 def properties():
     # Logic for properties page
-    return render_template('properties.html')
+    return render_template('property.html')
 
 
 @app.route('/leases')
