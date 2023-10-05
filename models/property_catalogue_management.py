@@ -84,14 +84,84 @@ class PropertyCatalogue:
         print(sql)
         return result
 
-    def update_property(self):
-        pass
+    # could update landlord_id, agent_id, tenant_id, address, price, description, status
+    def update_property_landlord_id(self, property_id, agent_id, update_id):
+        sql = f'update {PropertyCatalogue.table} set landlord_id={update_id} ' \
+              f'where property_id={property_id} and agent_id={agent_id};'
 
-    def delete_property(self):
-        pass
+        with self.connect_db() as db:
+            with db.cursor() as cs:
+                cs.execute(sql)
+                db.commit()
+
+    def update_property_agent_id(self, property_id, previous_id, update_id):
+        sql = f'update {PropertyCatalogue.table} set agent_id={update_id} ' \
+              f'where property_id={property_id} and agent_id={previous_id};'
+
+        with self.connect_db() as db:
+            with db.cursor() as cs:
+                cs.execute(sql)
+                db.commit()
+
+    def update_property_tenant_id(self, property_id, agent_id, update_id):
+        sql = f'update {PropertyCatalogue.table} set tenant_id={update_id} ' \
+              f'where property_id={property_id} and agent_id={agent_id};'
+
+        with self.connect_db() as db:
+            with db.cursor() as cs:
+                cs.execute(sql)
+                db.commit()
+
+    def update_property_address(self, property_id, agent_id, update_address):
+        sql = f'update {PropertyCatalogue.table} set address="{update_address}" ' \
+              f'where property_id={property_id} and agent_id={agent_id};'
+
+        with self.connect_db() as db:
+            with db.cursor() as cs:
+                cs.execute(sql)
+                db.commit()
+
+    def update_property_price(self, property_id, agent_id, update_price):
+        sql = f'update {PropertyCatalogue.table} set price={update_price} ' \
+              f'where property_id={property_id} and agent_id={agent_id};'
+
+        with self.connect_db() as db:
+            with db.cursor() as cs:
+                cs.execute(sql)
+                db.commit()
+
+    def update_property_description(self, property_id, agent_id, update_desc):
+        sql = f'update {PropertyCatalogue.table} set description="{update_desc}" ' \
+              f'where property_id={property_id} and agent_id={agent_id};'
+
+        with self.connect_db() as db:
+            with db.cursor() as cs:
+                cs.execute(sql)
+                db.commit()
+
+    def update_property_status(self, property_id, agent_id, update_status):
+        sql = f'update {PropertyCatalogue.table} set status={update_status} ' \
+              f'where property_id={property_id} and agent_id={agent_id};'
+
+        with self.connect_db() as db:
+            with db.cursor() as cs:
+                cs.execute(sql)
+                db.commit()
+
+    def delete_property(self, property_id, agent_id):
+        sql = f'delete from {PropertyCatalogue.table} where property_id={property_id} ' \
+              f'and agent_id={agent_id};'
+
+        with self.connect_db() as db:
+            with db.cursor() as cs:
+                cs.execute(sql)
+                db.commit()
+
 
 if __name__ == '__main__':
     db_test = PropertyCatalogue()
     # result = db_test.sort_property_by_search_keywords(address='NSW', price=1500)
-    result = db_test.sort_property_by_search_keywords(address='NSW')
-    print(result)
+    # result = db_test.sort_property_by_search_keywords(address='NSW')
+    # print(result)
+    # db_test.delete_property(2, 23)
+    db_test.update_property_description(5, 40, 'remodelling house')
