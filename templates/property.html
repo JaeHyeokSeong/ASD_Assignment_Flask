@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>This is property page</h1>
+<h1>Property Catalogue</h1>
+
+<a href="{{url_for('add_properties')}}"><h3>Add Property</h3></a>
+<a href="{{url_for('list_properties')}}"><h3>View Property List</h3></a>
+
 {% endblock %}
 

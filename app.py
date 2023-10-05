@@ -4,6 +4,7 @@ import mysql.connector
 import random
 import string
 from models.user_management import UserManagement
+from models.property_catalogue_management import PropertyCatalogue
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -127,6 +128,48 @@ def properties():
     # Logic for properties page
     return render_template('property.html')
 
+
+@app.route('/properties/add/', methods=['GET', 'POST'])
+def add_properties():
+    if request.method == 'GET':
+        return render_template('add_property.html')
+    else:
+        landlord_id = request.form['landlord_id']
+        agent_id = request.form['agent_id']
+        tenant_id = request.form['tenant_id']
+        property_address = request.form['property_address']
+        property_price = request.form['property_price']
+        property_description = request.form['property_description']
+        property_status = request.form['property_status']
+
+        # if tenant_id == '' it means tenant_id is not filled
+        if tenant_id == '':
+            tenant_id = 'null'
+
+        # if empty == 0 else rented == 1
+        if property_status == 'empty':
+            property_status = 0
+        else:
+            property_status = 1
+
+        # add upper values into database
+        proCatal = PropertyCatalogue()
+        proCatal.add_property(
+            landlord_id=landlord_id,
+            agent_id=agent_id,
+            tenant_id=tenant_id,
+            address=property_address,
+            price=property_price,
+            description=property_description,
+            status=property_status
+        )
+
+        return redirect(url_for('properties'))
+
+
+@app.route('/properties/list')
+def list_properties():
+    return render_template('list_property.html')
 
 @app.route('/leases')
 def leases():
