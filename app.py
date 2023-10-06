@@ -246,6 +246,10 @@ def update_properties_id(property_id):
         else:
             status = 1
 
+        # if tenant_id == '' it means tenant_id is not filled
+        if tenant_id == '':
+            tenant_id = 'null'
+
         prop_catal.update_property_all(property_id, landlord_id, agent_id, tenant_id, address,
                                        price, description, status)
 
