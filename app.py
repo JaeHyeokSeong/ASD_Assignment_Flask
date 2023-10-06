@@ -22,6 +22,7 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 user_management = UserManagement(mycursor, mydb)
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     registration_successful = False  # Default to False
