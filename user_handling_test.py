@@ -19,6 +19,9 @@ class MyTestCase(unittest.TestCase):
         password = "password123"
         phone = "123-456-7890"
 
+        # Configure the execute method of mock_cursor to return a value
+        self.mock_cursor.execute.return_value = None
+
         # Call the method
         self.user_management.add_user_to_database(random_id, name, email, user_type, password, phone)
 
@@ -27,6 +30,9 @@ class MyTestCase(unittest.TestCase):
 
     def test_get_user_info_from_database(self):
         user_id = 123
+
+        # Configure the execute method of mock_cursor to return a value
+        self.mock_cursor.execute.return_value = None
 
         # Call the method
         self.user_management.get_user_info_from_database(user_id)
@@ -39,6 +45,9 @@ class MyTestCase(unittest.TestCase):
         password = "password123"
         user_type = "agent"
 
+        # Configure the execute method of mock_cursor to return a value
+        self.mock_cursor.execute.return_value = None
+
         # Call the method
         self.user_management.authenticate_user(email, password, user_type)
 
@@ -46,6 +55,9 @@ class MyTestCase(unittest.TestCase):
         self.mock_cursor.execute.assert_called_once()
 
     def test_generate_random_id(self):
+        # Configure the execute method of mock_cursor to return a value
+        self.mock_cursor.execute.return_value = None
+
         # Call the method
         random_id = self.user_management.generate_random_id()
 
