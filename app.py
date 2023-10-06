@@ -251,9 +251,16 @@ def update_properties_id(property_id):
 
         return redirect(url_for('properties'))
 
+
 @app.route('/properties/delete/', methods=['POST'])
 def delete_properties():
-    pass
+    delete_property_id = request.form['delete_property_id']
+    user_id = session['user_id']
+
+    prop_catal = PropertyCatalogue()
+    prop_catal.delete_property(delete_property_id, user_id)
+
+    return redirect(url_for('list_properties'))
 
 
 @app.route('/leases')
