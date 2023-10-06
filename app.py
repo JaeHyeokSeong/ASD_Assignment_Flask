@@ -249,7 +249,7 @@ def update_properties_id(property_id):
         prop_catal.update_property_all(property_id, landlord_id, agent_id, tenant_id, address,
                                        price, description, status)
 
-        return redirect(url_for('properties'))
+        return redirect(url_for('list_properties'))
 
 
 @app.route('/properties/delete/', methods=['POST'])
