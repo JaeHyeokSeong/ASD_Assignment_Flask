@@ -200,6 +200,62 @@ def list_properties():
         return render_template('list_property.html', all_properties=all_properties)
 
 
+@app.route('/properties/update/')
+def update_properties():
+    user_type = session['user_type']
+    property_id = request.args.get('update_property_id')
+    user_id = session['user_id']
+
+    if user_type != 'agent':
+        if user_type == 'landlord':
+            return redirect(url_for('landlord_properties'))
+        else:
+            return redirect(url_for('tenant_properties'))
+
+    return redirect(url_for('update_properties_id', property_id=property_id))
+
+
+@app.route('/properties/update/<property_id>', methods=['GET', 'POST'])
+def update_properties_id(property_id):
+    user_type = session['user_type']
+    user_id = session['user_id']
+    prop_catal = PropertyCatalogue()
+
+    if user_type != 'agent':
+        if user_type == 'landlord':
+            return redirect(url_for('landlord_properties'))
+        else:
+            return redirect(url_for('tenant_properties'))
+
+    if request.method == 'GET':
+        update_property = prop_catal.search_property_by_property_id_agent(property_id, user_id)
+        return render_template('update_property.html', property_id=property_id, agent_id=user_id,
+                               update_property=update_property[0])
+    else:
+        landlord_id = request.form['landlord_id']
+        agent_id = request.form['agent_id']
+        tenant_id = request.form['tenant_id']
+        address = request.form['address']
+        price = request.form['price']
+        description = request.form['description']
+        status = request.form['status']
+
+        # status 0 means empty and 1 means rented
+        if status == 'empty':
+            status = 0
+        else:
+            status = 1
+
+        prop_catal.update_property_all(property_id, landlord_id, agent_id, tenant_id, address,
+                                       price, description, status)
+
+        return redirect(url_for('properties'))
+
+@app.route('/properties/delete/', methods=['POST'])
+def delete_properties():
+    pass
+
+
 @app.route('/leases')
 def leases():
     # Logic for leases page

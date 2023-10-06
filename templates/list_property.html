@@ -11,7 +11,7 @@
 </form>
 </p>
 <p>
-<form action="" method="post">
+<form action="{{url_for('update_properties')}}">
     <label for="update_property_id">Update property by selecting ID: </label>
     <select name="update_property_id" id="update_property_id">
         {% for property in all_properties %}
@@ -22,7 +22,7 @@
 </form>
 </p>
 <p>
-<form action="" method="post">
+<form action="{{url_for('delete_properties')}}" method="post">
     <label for="delete_property_id">Delete property by selecting ID: </label>
     <select name="update_property_id" id="delete_property_id">
         {% for property in all_properties %}

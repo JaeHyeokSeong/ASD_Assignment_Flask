@@ -8,7 +8,7 @@
     <p><label for="landlord_id">Landlord ID</label></p>
     <input type="number" name="landlord_id" id="landlord_id" placeholder="Enter Landlord ID" required autofocus>
     <p><label for="agent_id">Agent ID</label></p>
-    <input type="number" name="agent_id" id="agent_id" value="{{agent_id}}" placeholder="Enter Agent ID" required>
+    <input type="number" name="agent_id" id="agent_id" value="{{agent_id}}" readonly required>
     <p><label for="tenant_id">Tenant ID (If Exist)</label></p>
     <input type="number" name="tenant_id" id="tenant_id" placeholder="Enter Tenant ID">
     <p><label for="property_address">Address</label></p>
@@ -16,7 +16,7 @@
     <p><label for="property_price">Rental Price</label></p>
     <input type="text" name="property_price" id="property_price" placeholder="Enter Fortnight Price" required>
     <p><label for="property_description">Description</label></p>
-    <input type="text" name="property_description" id="property_description" placeholder="Enter Description" required>
+    <textarea name="property_description" id="property_description" placeholder="Enter Description" required cols="20" rows="5"></textarea>
     <p><label for="property_status">Status</label></p>
     <select name="property_status" id="property_status" required>
         <option value="empty" selected>Empty</option>

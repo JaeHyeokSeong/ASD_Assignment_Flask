@@ -70,6 +70,17 @@ class PropertyCatalogue:
 
         return result
 
+    def search_property_by_property_id_agent(self, property_id, agent_id):
+        sql = f'select * from {PropertyCatalogue.table} where' \
+              f' property_id={property_id} and agent_id={agent_id};'
+
+        with self.connect_db() as db:
+            with db.cursor(pymysql.cursors.DictCursor) as cs:
+                cs.execute(sql)
+                result = cs.fetchall()
+
+        return result
+
     # search keywords are 'address' or 'price' or both
     def sort_property_by_search_keywords(self, **search_keywords):
         condition = 'where'
@@ -152,6 +163,19 @@ class PropertyCatalogue:
 
     def update_property_status(self, property_id, agent_id, update_status):
         sql = f'update {PropertyCatalogue.table} set status={update_status} ' \
+              f'where property_id={property_id} and agent_id={agent_id};'
+
+        with self.connect_db() as db:
+            with db.cursor() as cs:
+                cs.execute(sql)
+                db.commit()
+
+    def update_property_all(self, property_id, landlord_id, agent_id, tenant_id, address, price
+                            , description, status):
+
+        sql = f'update {PropertyCatalogue.table} set landlord_id={landlord_id}, agent_id={agent_id}'\
+              f', tenant_id={tenant_id}, address="{address}", price={price}, description="{description}",' \
+              f'status={status} ' \
               f'where property_id={property_id} and agent_id={agent_id};'
 
         with self.connect_db() as db:
