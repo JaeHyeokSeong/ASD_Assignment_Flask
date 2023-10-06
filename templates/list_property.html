@@ -10,6 +10,9 @@
     <input type="submit" value="Search address">
 </form>
 </p>
+{% if not all_properties %}
+    <h3>Properties Not Found!</h3>
+{% else %}
 <p>
 <form action="{{url_for('update_properties')}}">
     <label for="update_property_id">Update property by selecting ID: </label>
@@ -32,10 +35,6 @@
     <input type="submit" value="Delete">
 </form>
 </p>
-
-{% if not all_properties %}
-    <h3>Properties Not Found!</h3>
-{% else %}
     <table border="1">
         <th>Property ID</th>
         <th>Landlord ID</th>
