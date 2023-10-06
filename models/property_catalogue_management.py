@@ -59,6 +59,17 @@ class PropertyCatalogue:
 
         return result
 
+    def search_property_by_address_tenant(self, address):
+        sql = f'select * from {PropertyCatalogue.table} where' \
+              f' address like "%{address}%";'
+
+        with self.connect_db() as db:
+            with db.cursor(pymysql.cursors.DictCursor) as cs:
+                cs.execute(sql)
+                result = cs.fetchall()
+
+        return result
+
     def search_property_by_address_agent(self, address, agent_id):
         sql = f'select * from {PropertyCatalogue.table} where' \
               f' agent_id={agent_id} and address like "%{address}%";'

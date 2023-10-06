@@ -124,9 +124,14 @@ def contacts():
     return render_template('contacts.html')
 
 
-@app.route('/properties')
+@app.route('/properties/')
 def properties():
     # Logic for properties page
+    # only agent can use this /properties/  url
+    user_type = session['user_type']
+    if user_type != 'agent':
+        return redirect(url_for('home'))
+
     return render_template('property.html')
 
 
@@ -292,11 +297,44 @@ def income():
     return render_template('income.html')
 
 
-@app.route('/tenant_properties')
+@app.route('/tenant_properties/')
 def tenant_properties():
     # Logic for tenant properties page
-    return render_template('tenant_properties.html')
 
+    user_id = session['user_id']
+    user_type = session['user_type']
+
+    # only tenant can use /tenant_properties/ url
+    if user_type != 'tenant':
+        return redirect(url_for('home'))
+
+    prop_catal = PropertyCatalogue()
+    # retrieve search_keyword
+    search_keyword = request.args.get('search_keyword')
+    searched_properties = None
+
+    if search_keyword is None:
+        searched_properties = prop_catal.find_all_properties_by_tenant()
+    else:
+        searched_properties = prop_catal.search_property_by_address_tenant(
+            search_keyword)
+
+    return render_template('tenant_properties.html', searched_properties=searched_properties)
+
+
+@app.route('/tenant_properties/apply/<int:property_id>/<int:agent_id>')
+def tenant_properties_apply(property_id, agent_id):
+    user_id = session['user_id']
+    user_type = session['user_type']
+
+    # only tenant can access this page
+    if user_type != 'tenant':
+        return redirect(url_for('home'))
+
+    prop_catal = PropertyCatalogue()
+    searched_property = prop_catal.search_property_by_property_id_agent(property_id, agent_id)
+
+    return render_template('tenant_properties_apply.html', searched_property=searched_property)
 
 @app.route('/payments')
 def payments():

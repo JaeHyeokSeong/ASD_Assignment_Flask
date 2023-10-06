@@ -1,0 +1,38 @@
+<head>
+    <title>Tenant Search Management</title>
+</head>
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Search Management</h1>
+
+    <fieldset>
+        <legend>Search Property</legend>
+        <form action="{{url_for('tenant_properties')}}" method="get">
+        <input type="text" name="search_keyword" placeholder="Search address">
+        <input type="submit" value="Search">
+    </form>
+    </fieldset>
+    <br>
+    <fieldset>
+        <legend>Property List</legend>
+        {% if not searched_properties %}
+            <h3>Not Found!</h3>
+        {% else %}
+            {% for property in searched_properties %}
+            <fieldset>
+                <legend><h3>Agent ID: {{property['agent_id']}}</h3></legend>
+                <h4>{{property['address']}}</h4>
+                <h4>{{property['price']}}</h4>
+                {% if property['status'] == 0 %}
+                <a href="{{url_for('tenant_properties_apply', property_id=property['property_id'], agent_id=property['agent_id'])}}">
+                    <button>Apply</button>
+                </a>
+                {% else %}
+                    <button disabled>Rented</button>
+                {% endif %}
+            </fieldset>
+        {% endfor %}
+        {% endif %}
+    </fieldset>
+{% endblock %}
