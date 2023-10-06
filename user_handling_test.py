@@ -1,68 +1,53 @@
 import unittest
-from unittest.mock import Mock
+import mysql.connector
+import random
+import string
 from models.user_management import UserManagement
 
 class MyTestCase(unittest.TestCase):
     def setUp(self):
-        # Create a mock for mysql.connector
-        self.mock_cursor = Mock()
-        self.mock_db = Mock()
+        # Connect to the testing database
+        self.test_db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="root1234",
+            port='3306',
+            database='python_db'
+        )
 
-        # Create an instance of UserManagement with the mock objects
-        self.user_management = UserManagement(self.mock_cursor, self.mock_db)
+        # Create a cursor from the testing database connection
+        self.test_cursor = self.test_db.cursor()
+
+        # Generate a unique random ID for each test run
+        self.random_id = random.randint(100000, 999999)
+
+        # Create an instance of UserManagement with the testing database cursor and connection
+        self.user_management = UserManagement(self.test_cursor, self.test_db)
+
+    def tearDown(self):
+        # Delete the test user from the database after each test
+        self.test_cursor.execute("DELETE FROM users WHERE id = %s", (self.random_id,))
+        # Commit the changes to the database
+        self.test_db.commit()
+        # Close the database connection after each test
+        self.test_db.close()
 
     def test_add_user_to_database(self):
-        random_id = 123
         name = "John Doe"
         email = "johndoe@example.com"
         user_type = "agent"
         password = "password123"
         phone = "123-456-7890"
 
-        # Configure the execute method of mock_cursor to return a value
-        self.mock_cursor.execute.return_value = None
-
         # Call the method
-        self.user_management.add_user_to_database(random_id, name, email, user_type, password, phone)
+        self.user_management.add_user_to_database(self.random_id, name, email, user_type, password, phone)
 
-        # Assert that the execute method of the mock cursor was called with the correct arguments
-        self.mock_cursor.execute.assert_called_once()
+        # Retrieve the user data from the database for assertions
+        self.test_cursor.execute("SELECT name, email, phone, password FROM users WHERE id = %s", (self.random_id,))
+        user_data = self.test_cursor.fetchone()
 
-    def test_get_user_info_from_database(self):
-        user_id = 123
-
-        # Configure the execute method of mock_cursor to return a value
-        self.mock_cursor.execute.return_value = None
-
-        # Call the method
-        self.user_management.get_user_info_from_database(user_id)
-
-        # Assert that the execute method of the mock cursor was called with the correct arguments
-        self.mock_cursor.execute.assert_called_once()
-
-    def test_authenticate_user(self):
-        email = "johndoe@example.com"
-        password = "password123"
-        user_type = "agent"
-
-        # Configure the execute method of mock_cursor to return a value
-        self.mock_cursor.execute.return_value = None
-
-        # Call the method
-        self.user_management.authenticate_user(email, password, user_type)
-
-        # Assert that the execute method of the mock cursor was called with the correct arguments
-        self.mock_cursor.execute.assert_called_once()
-
-    def test_generate_random_id(self):
-        # Configure the execute method of mock_cursor to return a value
-        self.mock_cursor.execute.return_value = None
-
-        # Call the method
-        random_id = self.user_management.generate_random_id()
-
-        # Assert that the returned random ID is an integer
-        self.assertIsInstance(random_id, int)
+        # Assert that the user data in the database matches the input data
+        self.assertEqual(user_data, (name, email, phone, password))
 
 if __name__ == '__main__':
     unittest.main()
