@@ -15,7 +15,8 @@ mydb = mysql.connector.connect(
     user="pascal",
     password="asd2023Group3",
     port='3306',
-    database='python_db'
+    database='python_db',
+    ssl_ca='/var/www/html/DigiCertGlobalRootG2.crt.pem'
 )
 
 mycursor = mydb.cursor()
