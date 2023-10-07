@@ -23,10 +23,10 @@
             <fieldset>
                 <legend><h3>Agent ID: {{property['agent_id']}}</h3></legend>
                 <h4>{{property['address']}}</h4>
-                <h4>{{property['price']}}</h4>
+                <h4>AUD: {{property['price']}}</h4>
                 {% if property['status'] == 0 %}
                 <a href="{{url_for('tenant_properties_apply', property_id=property['property_id'], agent_id=property['agent_id'])}}">
-                    <button>Apply</button>
+                    <button>View</button>
                 </a>
                 {% else %}
                     <button disabled>Rented</button>

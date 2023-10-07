@@ -322,7 +322,7 @@ def tenant_properties():
     return render_template('tenant_properties.html', searched_properties=searched_properties)
 
 
-@app.route('/tenant_properties/apply/<int:property_id>/<int:agent_id>')
+@app.route('/tenant_properties/apply/<int:property_id>/<int:agent_id>', methods=['GET', 'POST'])
 def tenant_properties_apply(property_id, agent_id):
     user_id = session['user_id']
     user_type = session['user_type']
@@ -334,7 +334,11 @@ def tenant_properties_apply(property_id, agent_id):
     prop_catal = PropertyCatalogue()
     searched_property = prop_catal.search_property_by_property_id_agent(property_id, agent_id)
 
-    return render_template('tenant_properties_apply.html', searched_property=searched_property)
+    if request.method == 'GET':
+        return render_template('tenant_properties_apply.html', searched_property=searched_property[0])
+    else:
+        print(f'apply: {searched_property}')
+        return redirect(url_for('payments'))
 
 @app.route('/payments')
 def payments():
