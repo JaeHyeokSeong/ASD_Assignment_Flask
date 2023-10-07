@@ -182,28 +182,72 @@ def add_properties():
         return redirect(url_for('properties'))
 
 
-@app.route('/properties/list/', methods=['GET', 'POST'])
+@app.route('/properties/list/', methods=['GET'])
 def list_properties():
     user_id = session['user_id']
     user_type = session['user_type']
 
-    if request.method == 'GET':
-        # only agent can access this page
-        if user_type != 'agent':
-            if user_type == 'landlord':
-                redirect(url_for('landlord_properties'))
-            else:
-                redirect(url_for('tenant_properties'))
+    # only agent can access this url
+    if user_type != 'agent':
+        return redirect(url_for('home'))
 
-        prop_catal = PropertyCatalogue()
-        all_properties = prop_catal.find_all_properties_by_agent(agent_id=user_id)
+    search_keyword_address = request.args.get('search_keyword_address')
+    search_keyword_property_id = request.args.get('search_keyword_property_id')
+    search_keyword_tenant_id = request.args.get('search_keyword_tenant_id')
+    search_keyword_landlord_id = request.args.get('search_keyword_landlord_id')
 
-        return render_template('list_property.html', all_properties=all_properties)
-    else:
-        address = request.form['search_keywords']
-        prop_catal = PropertyCatalogue()
-        all_properties = prop_catal.search_property_by_address_agent(address=address, agent_id=user_id)
-        return render_template('list_property.html', all_properties=all_properties)
+    if search_keyword_address is None:
+        search_keyword_address = ''
+    if search_keyword_property_id is None:
+        search_keyword_property_id = ''
+    if search_keyword_tenant_id is None:
+        search_keyword_tenant_id = ''
+    if search_keyword_landlord_id is None:
+        search_keyword_landlord_id = ''
+
+    print(f'TEST: {search_keyword_address, search_keyword_property_id, search_keyword_tenant_id, search_keyword_landlord_id}')
+
+    prop_catal = PropertyCatalogue()
+    all_properties = prop_catal.find_all_properties_by_agent(agent_id=user_id)
+
+    # filter
+    tmp = []
+    if search_keyword_address != '':
+        for fil_prop in all_properties:
+            if fil_prop['address'].lower() != search_keyword_address.lower():
+                tmp.append(fil_prop)
+
+        for t in tmp:
+            all_properties.remove(t)
+
+    tmp = []
+    if search_keyword_property_id != '':
+        for fil_prop in all_properties:
+            if fil_prop['property_id'] != int(search_keyword_property_id):
+                tmp.append(fil_prop)
+
+        for t in tmp:
+            all_properties.remove(t)
+
+    if search_keyword_landlord_id != '':
+        for fil_prop in all_properties:
+            if fil_prop['landlord_id'] != int(search_keyword_landlord_id):
+                tmp.append(fil_prop)
+
+        for t in tmp:
+            all_properties.remove(t)
+
+    tmp = []
+    if search_keyword_tenant_id != '':
+        for fil_prop in all_properties:
+            if fil_prop['tenant_id'] != int(search_keyword_tenant_id):
+                tmp.append(fil_prop)
+
+        for t in tmp:
+            all_properties.remove(t)
+
+    return render_template('list_property.html', all_properties=all_properties,
+                           total_properties_count=len(all_properties))
 
 
 @app.route('/properties/update/')
@@ -212,11 +256,9 @@ def update_properties():
     property_id = request.args.get('update_property_id')
     user_id = session['user_id']
 
+    # only agent can access this url
     if user_type != 'agent':
-        if user_type == 'landlord':
-            return redirect(url_for('landlord_properties'))
-        else:
-            return redirect(url_for('tenant_properties'))
+        return redirect(url_for('home'))
 
     return redirect(url_for('update_properties_id', property_id=property_id))
 
@@ -228,10 +270,7 @@ def update_properties_id(property_id):
     prop_catal = PropertyCatalogue()
 
     if user_type != 'agent':
-        if user_type == 'landlord':
-            return redirect(url_for('landlord_properties'))
-        else:
-            return redirect(url_for('tenant_properties'))
+        return redirect(url_for('home'))
 
     if request.method == 'GET':
         update_property = prop_catal.search_property_by_property_id_agent(property_id, user_id)
@@ -310,14 +349,25 @@ def tenant_properties():
 
     prop_catal = PropertyCatalogue()
     # retrieve search_keyword
-    search_keyword = request.args.get('search_keyword')
+    search_keyword_address = request.args.get('search_keyword_address')
+    search_keyword_price = request.args.get('search_keyword_price')
     searched_properties = None
+    print(f'TEST: {search_keyword_address, search_keyword_price}')
+    if search_keyword_address is None:
+        search_keyword_address = ''
+    if search_keyword_price is None:
+        search_keyword_price = ''
 
-    if search_keyword is None:
+    if search_keyword_address == '' and search_keyword_price == '':
         searched_properties = prop_catal.find_all_properties_by_tenant()
     else:
-        searched_properties = prop_catal.search_property_by_address_tenant(
-            search_keyword)
+        if search_keyword_address != '' and search_keyword_price != '':
+            searched_properties = prop_catal.sort_property_by_search_keywords(address=search_keyword_address,
+                                                                              price=search_keyword_price)
+        elif search_keyword_address != '':
+            searched_properties = prop_catal.sort_property_by_search_keywords(address=search_keyword_address)
+        elif search_keyword_price != '':
+            searched_properties = prop_catal.sort_property_by_search_keywords(price=search_keyword_price)
 
     return render_template('tenant_properties.html', searched_properties=searched_properties)
 
@@ -339,6 +389,7 @@ def tenant_properties_apply(property_id, agent_id):
     else:
         print(f'apply: {searched_property}')
         return redirect(url_for('payments'))
+
 
 @app.route('/payments')
 def payments():

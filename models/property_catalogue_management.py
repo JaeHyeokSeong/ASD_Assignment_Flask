@@ -30,7 +30,7 @@ class PropertyCatalogue:
                 db.commit()
 
     def find_all_properties_by_tenant(self):
-        sql = f'select * from {PropertyCatalogue.table};'
+        sql = f'select * from {PropertyCatalogue.table} where status=0;'
 
         with self.connect_db() as db:
             with db.cursor(pymysql.cursors.DictCursor) as cs:
@@ -94,10 +94,10 @@ class PropertyCatalogue:
 
     # search keywords are 'address' or 'price' or both
     def sort_property_by_search_keywords(self, **search_keywords):
-        condition = 'where'
+        condition = 'where status=0 and'
         for column_name, value in search_keywords.items():
             if column_name == 'address':
-                condition = condition + f' {column_name}="{value}" and'
+                condition = condition + f' {column_name} like "%{value}%" and'
             else:
                 condition = condition + f' {column_name}<={value} and'
 
@@ -114,7 +114,6 @@ class PropertyCatalogue:
                 cs.execute(sql)
                 result = cs.fetchall()
 
-        print(sql)
         return result
 
     # could update landlord_id, agent_id, tenant_id, address, price, description, status

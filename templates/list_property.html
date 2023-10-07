@@ -1,20 +1,35 @@
+<head>
+    <title>Property List Management</title>
+</head>
 {% extends 'base.html' %}
-
 {% block content %}
 <h1>View Property List</h1>
 
-<p>
-<form action="{{url_for('list_properties')}}", method="post">
-    <label for="search_property_by_address">Search properties by entering address: </label>
-    <input type="text" name="search_keywords" id="search_property_by_address" placeholder="Search property">
-    <input type="submit" value="Search address">
-</form>
-</p>
+<fieldset>
+    <legend><h3>Search</h3></legend>
+    <form action="{{url_for('list_properties')}}">
+        <label for="search_keyword_address">Address: </label>
+        <input type="text" name="search_keyword_address" id="search_keyword_address" placeholder="enter address">
+        <label for="search_keyword_property_id">Property ID: </label>
+        <input type="number" name="search_keyword_property_id" id="search_keyword_property_id" placeholder="enter property ID">
+        <label for="search_keyword_landlord_id">Landlord ID: </label>
+        <input type="number" name="search_keyword_landlord_id" id="search_keyword_landlord_id" placeholder="enter landlord ID">
+        <label for="search_keyword_tenant_id">Tenant ID: </label>
+        <input type="number" name="search_keyword_tenant_id" id="search_keyword_tenant_id" placeholder="enter tenant ID">
+        <label for="search">Search: </label>
+        <input id="search" type="submit" value="Search">
+    </form>
+</fieldset>
+
 {% if not all_properties %}
-    <h3>Properties Not Found!</h3>
+    <fieldset>
+        <legend><h3>Notice</h3></legend>
+        <p>Properties Not Found!</p>
+    </fieldset>
 {% else %}
-<p>
-<form action="{{url_for('update_properties')}}">
+<fieldset>
+    <legend><h3>Update</h3></legend>
+    <form action="{{url_for('update_properties')}}">
     <label for="update_property_id">Update property by selecting ID: </label>
     <select name="update_property_id" id="update_property_id">
         {% for property in all_properties %}
@@ -22,10 +37,12 @@
         {% endfor %}
     </select>
     <input type="submit" value="Update">
-</form>
-</p>
-<p>
-<form action="{{url_for('delete_properties')}}" method="post">
+    </form>
+</fieldset>
+
+<fieldset>
+    <legend><h3>Delete</h3></legend>
+    <form action="{{url_for('delete_properties')}}" method="post" id="delete_property_confirm">
     <label for="delete_property_id">Delete property by selecting ID: </label>
     <select name="delete_property_id" id="delete_property_id">
         {% for property in all_properties %}
@@ -33,30 +50,28 @@
         {% endfor %}
     </select>
     <input type="submit" value="Delete">
-</form>
-</p>
-    <table border="1">
-        <th>Property ID</th>
-        <th>Landlord ID</th>
-        <th>Agent ID</th>
-        <th>Tenant ID</th>
-        <th>Address</th>
-        <th>Price</th>
-        <th>Description</th>
-        <th>Status (1: rented or 0: empty)</th>
-        {% for property in all_properties %}
-            <tr>
-                <td>{{property['property_id']}}</td>
-                <td>{{property['landlord_id']}}</td>
-                <td>{{property['agent_id']}}</td>
-                <td>{{property['tenant_id']}}</td>
-                <td>{{property['address']}}</td>
-                <td>{{property['price']}}</td>
-                <td>{{property['description']}}</td>
-                <td>{{property['status']}}</td>
-            </tr>
-        {% endfor %}
-    </table>
+        <script>
+            document.getElementById('delete_property_confirm').onclick = function() {
+                if(confirm("[Warning] Do you want to delete it?") === false ) return false
+            }
+        </script>
+    </form>
+</fieldset>
+
+<fieldset>
+    <legend><h3>List (total count: {{total_properties_count}})</h3></legend>
+    {% for property in all_properties %}
+    <fieldset>
+        <legend><h4>Property ID: {{property['property_id']}}</h4></legend>
+        <p><b>Landlord ID:</b> {{property['landlord_id']}}</p>
+        <p><b>Tenant ID:</b> {{property['tenant_id']}}</p>
+        <p><b>Address:</b> {{property['address']}}</p>
+        <p><b>Price:</b> {{property['price']}}</p>
+        <p><b>Description:</b> <textarea cols="60" rows="10" readonly>{{property['description']}}</textarea></p>
+        <p><b>Status:</b> {{property['status']}}</p>
+    </fieldset>
+    {% endfor %}
+</fieldset>
 {% endif %}
 
 {% endblock %}

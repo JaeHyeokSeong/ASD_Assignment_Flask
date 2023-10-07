@@ -7,32 +7,31 @@
     <h1>Search Management</h1>
 
     <fieldset>
-        <legend>Search Property</legend>
+        <legend><h4>Search Property</h4></legend>
         <form action="{{url_for('tenant_properties')}}" method="get">
-        <input type="text" name="search_keyword" placeholder="Search address">
-        <input type="submit" value="Search">
-    </form>
+            <label for="search_keyword_address"><p>Search address</p></label>
+            <input type="text" name="search_keyword_address" id="search_keyword_address" placeholder="ex) sydney">
+            <label for="search_keyword_price"><p>Filter price</p></label>
+            <input type="number" name="search_keyword_price" id="search_keyword_price" placeholder="ex) 1500">
+            <p><input type="submit" value="Search"></p>
+        </form>
     </fieldset>
     <br>
     <fieldset>
-        <legend>Property List</legend>
+        <legend><h4>Property List</h4></legend>
         {% if not searched_properties %}
-            <h3>Not Found!</h3>
+            <h6>Not Found!</h6>
         {% else %}
             {% for property in searched_properties %}
             <fieldset>
-                <legend><h3>Agent ID: {{property['agent_id']}}</h3></legend>
-                <h4>{{property['address']}}</h4>
-                <h4>AUD: {{property['price']}}</h4>
-                {% if property['status'] == 0 %}
+                <legend><h5>Agent ID: {{property['agent_id']}}</h5></legend>
+                <h6>Address: {{property['address']}}</h6>
+                <h6>Price: {{property['price']}} AUD</h6>
                 <a href="{{url_for('tenant_properties_apply', property_id=property['property_id'], agent_id=property['agent_id'])}}">
                     <button>View</button>
                 </a>
-                {% else %}
-                    <button disabled>Rented</button>
-                {% endif %}
             </fieldset>
-        {% endfor %}
+            {% endfor %}
         {% endif %}
     </fieldset>
 {% endblock %}
