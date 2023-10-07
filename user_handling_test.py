@@ -8,9 +8,9 @@ class MyTestCase(unittest.TestCase):
     def setUp(self):
         # Connect to the testing database
         self.test_db = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="root1234",
+            host="asd-spring2023.mysql.database.azure.com",
+            user="pascal",
+            password="asd2023Group3",
             port='3306',
             database='python_db'
         )
