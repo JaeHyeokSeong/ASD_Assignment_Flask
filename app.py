@@ -144,10 +144,8 @@ def add_properties():
         # only agent can add properties
         if user_type == 'agent':
             return render_template('add_property.html', agent_id=user_id)
-        elif user_type == 'landlord':
-            return redirect(url_for('landlord_properties'))
         else:
-            return redirect(url_for('tenant_properties'))
+            return redirect(url_for('home'))
     else:
         landlord_id = request.form['landlord_id']
         agent_id = request.form['agent_id']
