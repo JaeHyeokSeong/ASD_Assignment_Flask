@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="PaymentMethod.css">
+    <title>Payment Methods</title>
+</head>
+<body>
+<header>
+    <h1>Payment Methods</h1>
+</header>
+
+<main>
+    <div class="action-bar">
+        <h2>Select Payment Method</h2>
+        <button id="add-payment-button">Add Payment Method</button>
+    </div>
+    <ul class="payment-list">
+        <li>
+            <span>Credit Card - **** **** **** 1234</span>
+            <form action="PaymentSuccess.html">
+            <button class="select-button" type="submit">Select</button>
+            </form>
+            <button class="edit-button">Edit</button>
+            <button class="delete-button">Delete</button>
+        </li>
+        <li>
+            <span>Bank Account - **** **** 9876</span>
+            <form action="PaymentSuccess.html">
+                <button class="select-button" type="submit">Select</button>
+            </form>
+            <button class="edit-button">Edit</button>
+            <button class="delete-button">Delete</button>
+        </li>
+        <!-- Add more payment methods here -->
+    </ul>
+</main>
+
+<footer>
+    <p>&copy; 2023 Property Management System</p>
+</footer>
+</body>
+</html>
