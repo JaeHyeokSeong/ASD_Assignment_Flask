@@ -20,14 +20,25 @@ class PropertyCatalogue:
         )
         return self.python_db
 
-    def add_property(self, landlord_id, agent_id, tenant_id, address, price, description, status):
-        sql = f'insert into {PropertyCatalogue.table} values (null, {landlord_id}, {agent_id}, ' \
-              f'{tenant_id}, "{address}", {price}, "{description}", {status});'
+    def add_property(self, landlord_id, agent_id, tenant_id, address, price, description, status, property_id=None):
+        sql = ''
+        if property_id is None:
+            sql = f'insert into {PropertyCatalogue.table} values (null, {landlord_id}, {agent_id}, ' \
+                  f'{tenant_id}, "{address}", {price}, "{description}", {status});'
+        else:
+            sql = f'insert into {PropertyCatalogue.table} values ({property_id}, {landlord_id}, {agent_id}, ' \
+                  f'{tenant_id}, "{address}", {price}, "{description}", {status});'
+
+        status = False
 
         with self.connect_db() as db:
             with db.cursor() as cs:
                 cs.execute(sql)
                 db.commit()
+                status = True
+
+        # return True if add_property method has success if not return False
+        return status
 
     def find_all_properties_by_tenant(self):
         sql = f'select * from {PropertyCatalogue.table} where status=0;'

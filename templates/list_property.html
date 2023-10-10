@@ -42,14 +42,14 @@
 
 <fieldset>
     <legend><h3>Delete</h3></legend>
-    <form action="{{url_for('delete_properties')}}" method="post" id="delete_property_confirm">
+    <form action="{{url_for('delete_properties')}}" method="post">
     <label for="delete_property_id">Delete property by selecting ID: </label>
     <select name="delete_property_id" id="delete_property_id">
         {% for property in all_properties %}
             <option value="{{property['property_id']}}">{{property['property_id']}}</option>
         {% endfor %}
     </select>
-    <input type="submit" value="Delete">
+    <input type="submit" value="Delete" id="delete_property_confirm">
         <script>
             document.getElementById('delete_property_confirm').onclick = function() {
                 if(confirm("[Warning] Do you want to delete it?") === false ) return false
