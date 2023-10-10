@@ -11,12 +11,12 @@ app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
 mydb = mysql.connector.connect(
-    host="asd-spring2023.mysql.database.azure.com",
     user="pascal",
     password="asd2023Group3",
-    port='3306',
-    database='python_db',
-    ssl_ca='/var/www/html/DigiCertGlobalRootG2.crt.pem'
+    host="asd-spring2023.mysql.database.azure.com",
+    port=3306,
+    database="python_db",
+    ssl_ca="./DigiCertGlobalRootCA.crt.pem",
 )
 
 mycursor = mydb.cursor()
