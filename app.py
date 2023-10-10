@@ -1,8 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for, session
 from flask_session import Session
 import mysql.connector
-import random
-import string
 from models.user_management import UserManagement
 from models.contact_management import ContactManagement
 
