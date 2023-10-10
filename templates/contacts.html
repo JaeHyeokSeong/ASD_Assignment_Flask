@@ -37,6 +37,7 @@
             <td>{{ contact.phone_number }}</td>
         </tr>
         {% endfor %}
+    </table>
 {% elif session['user_type'] == 'landlord' %}
     <h1>Associated Agents</h1>
     <table>
@@ -54,6 +55,7 @@
             <td>{{ contact.phone_number }}</td>
         </tr>
         {% endfor %}
+    </table>
 
     <h1>Associated Tenants</h1>
     <table>
@@ -71,6 +73,7 @@
             <td>{{ contact.phone_number }}</td>
         </tr>
         {% endfor %}
+    </table>
 {% elif session['user_type'] == 'tenant' %}
     <h1>Associated Agents</h1>
     <table>
@@ -88,6 +91,7 @@
             <td>{{ contact.phone_number }}</td>
         </tr>
         {% endfor %}
+    </table>
 
     <h1>Associated Landlords</h1>
     <table>
@@ -105,6 +109,7 @@
             <td>{{ contact.phone_number }}</td>
         </tr>
         {% endfor %}
+    </table>
 {% endif %}
 
 <style>
