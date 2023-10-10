@@ -161,7 +161,7 @@ def tenant_properties():
 @app.route('/payments')
 def payments():
     # Logic for payments page
-    return render_template('payments.html')
+    return render_template('ViewPaymentMethod.html')
 
 
 @app.route('/maintenance')
