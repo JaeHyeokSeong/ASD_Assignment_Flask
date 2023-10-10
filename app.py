@@ -1,9 +1,10 @@
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import Flask, request, render_template, redirect, url_for, session, flash
 from flask_session import Session
 import mysql.connector
 import random
 import string
 from models.user_management import UserManagement
+from models.payment_management import PaymentMethod
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -20,6 +21,7 @@ mydb = mysql.connector.connect(
 
 mycursor = mydb.cursor()
 user_management = UserManagement(mycursor, mydb)
+payment_management = PaymentMethod(mycursor, mydb)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -158,11 +160,25 @@ def tenant_properties():
     return render_template('tenant_properties.html')
 
 
-@app.route('/payments')
+@app.route('/payments', methods=['GET', 'POST'])
 def payments():
-    # Logic for payments page
-    return render_template('ViewPaymentMethod.html')
+    user_id = session['user_id']
+    all_pay_methods = payment_management.get_all_payment_method(user_id)
+    return render_template('ViewPaymentMethod.html', all_pay_methods=all_pay_methods)
 
+
+@app.route('/addpayment', methods=['GET', 'POST'])
+def addpayment():
+    user_id = session['user_id']
+    if request.method == 'POST':
+        cardNumber = request.form['card-number']
+        name = request.form['cardholder-name']
+        date = request.form['expiry-date']
+        cvv = request.form['cvv']
+        payment_management.add_payment_method(cardNumber, name, date, cvv, user_id)
+        return redirect(url_for('payments'))
+
+    return render_template('AddPayment.html')
 
 @app.route('/maintenance')
 def maintenance():

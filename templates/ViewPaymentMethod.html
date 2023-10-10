@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 
 {% extends 'base.html' %}
 {% block title %}Payment Methods{% endblock %}
@@ -9,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/ViewPaymentMethod.css">
+
 </head>
 <body>
 <header>
@@ -17,20 +16,17 @@
 
 <main>
     <div class="action-bar">
-        <h2>Select Payment Method</h2>
-        <button id="add-payment-button">Add Payment Method</button>
+        <h2>Manage Payment Method</h2>
+    <a href='{{url_for('addpayment')}}' class="button-link"> Add Payment Method </a>
     </div>
     <ul class="payment-list">
+        {% for payment in all_pay_methods %}
         <li>
-            <span>Credit Card - **** **** **** 1234</span>
+            <span>Card {{payment[0]}} : {{payment[1]}}</span>
             <button class="edit-button">Edit</button>
             <button class="delete-button">Delete</button>
         </li>
-        <li>
-            <span>Bank Account - **** **** 9876</span>
-            <button class="edit-button">Edit</button>
-            <button class="delete-button">Delete</button>
-        </li>
+        {% endfor %}
         <!-- Add more payment methods here -->
     </ul>
 </main>
@@ -39,9 +35,7 @@
     <p>&copy; 2023 Property Management System</p>
 </footer>
 </body>
-</html>
 
 {% endblock %}
-
 
 
