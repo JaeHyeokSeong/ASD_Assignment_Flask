@@ -41,3 +41,4 @@ stages:
         testResultsFormat: 'JUnit'
         testResultsFiles: 'test-unit.xml'
       condition: always()
+
