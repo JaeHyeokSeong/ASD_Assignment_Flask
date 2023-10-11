@@ -16,6 +16,12 @@ class PaymentMethod():
         payment_methods = self.mycursor.fetchall()
         return payment_methods
 
+    def get_payment_method_by_id(self, pay_id):
+        # Execute SQL query to retrieve user data by ID
+        self.mycursor.execute("SELECT * FROM paymentMethod WHERE pay_id = %s", (pay_id,))
+        payment_methods = self.mycursor.fetchone()
+        return payment_methods
+
     def update_payment_method(self, pay_id, cardNumber, cardHolderName, expiryDate, CVV, tenant_id):
         try:
             update_query = "UPDATE paymentMethod SET cardNumber = %s, cardHolderName = %s, expiryDate = %s, CVV = %s, tenant_id = %s WHERE pay_id = %s"

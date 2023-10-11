@@ -1,36 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
+
+{% extends 'base.html' %}
+{% block title %}View Invoices{% endblock %}
+{% block content %}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/ViewInvoices.css">
-    <title>Property Management System</title>
+    <link rel="stylesheet" href="../static/ViewPaymentMethod.css">
+
 </head>
 <body>
 <header>
-    <h1>Property Management System</h1>
+    <h1>View Invoices</h1>
 </header>
 
-<nav>
-    <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Invoices</a></li>
-        <li><a href="#">Profile</a></li>
-    </ul>
-</nav>
-
 <main>
-    <h2>Your Invoices</h2>
-    <ul class="invoice-list">
-        <li><a href="InvoiceDetails.html">Invoice #1 - $500</a></li>
-        <li><a href="InvoiceDetails.html">Invoice #2 - $300</a></li>
-        <li><a href="InvoiceDetails.html">Invoice #3 - $700</a></li>
-        <!-- Add more invoice items here -->
+    <div class="action-bar">
+        <h2>Invoices</h2>
+    </div>
+    <ul class="payment-list">
+        {% for invoice in invoices %}
+        <li>
+                <span>Invoice {{ invoice[0] }}: $ {{ invoice[2] }}</span>
+            <div class="button-bar">
+                <form action="/select_invoice" method="post">
+                    <input type="hidden" name="invoice_id" value="{{ invoice[0] }}">
+                    <button type="submit">Select</button>
+                </form>
+                &nbsp;&nbsp;
+            </div>
+        </li>
+        {% endfor %}
     </ul>
+
 </main>
 
 <footer>
     <p>&copy; 2023 Property Management System</p>
 </footer>
 </body>
-</html>
+
+{% endblock %}
+
+

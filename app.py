@@ -5,6 +5,9 @@ import random
 import string
 from models.user_management import UserManagement
 from models.payment_management import PaymentMethod
+from models.invoice_management import Invoice
+from models.leaseapplication_management import LeaseApplication
+from models.tenant_request_form_management import TenantRequestForm
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -22,6 +25,9 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 user_management = UserManagement(mycursor, mydb)
 payment_management = PaymentMethod(mycursor, mydb)
+invoice_management = Invoice(mycursor,mydb)
+leaseapplication_management = LeaseApplication(mycursor, mydb)
+tenant_request_form_management = TenantRequestForm(mycursor,mydb)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -179,6 +185,39 @@ def addpayment():
         return redirect(url_for('payments'))
 
     return render_template('AddPayment.html')
+
+@app.route('/delete_payment', methods=['GET', 'POST'])
+def delete_payment():
+    pay_id = request.form['payment_id']
+    payment_management.delete_payment_method(pay_id)
+    return redirect(url_for('payments'))
+
+@app.route('/edit_payment', methods=['GET', 'POST'])
+def edit_payment():
+    pay_id = request.form['payment_id']
+    pay_details = payment_management.get_payment_method_by_id(pay_id)
+    return render_template('EditPayment.html', pay_details=pay_details)
+
+@app.route('/confirm_edit', methods=['GET', 'POST'])
+def confirm_edit():
+    pay_id = request.form['payment_id']
+    cardNumber = request.form['card-number']
+    cardHolderName = request.form['cardholder-name']
+    expiryDate = request.form['expiry-date']
+    cvv = request.form['cvv']
+    tenant_id = session['user_id']
+    payment_management.update_payment_method(pay_id,cardNumber,cardHolderName,expiryDate,cvv,tenant_id)
+    return redirect(url_for('payments'))
+
+@app.route('/invoices', methods=['GET','POST'])
+def invoices():
+    tenant_id = session['user_id']
+    invoices = invoice_management.get_invoices_by_tenant(tenant_id)
+    return render_template('ViewInvoices.html', invoices=invoices)
+@app.route('/select_invoice', methods=['GET','POST'])
+def select_invoice():
+    invoice_id = request.form['invoice_id']
+
 
 @app.route('/maintenance')
 def maintenance():

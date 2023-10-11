@@ -22,13 +22,22 @@
     <ul class="payment-list">
         {% for payment in all_pay_methods %}
         <li>
-            <span>Card {{payment[0]}} : {{payment[1]}}</span>
-            <button class="edit-button">Edit</button>
-            <button class="delete-button">Delete</button>
+                <span>Card {{ payment[0] }}: *************{{ payment[1] % 1000}}</span>
+            <div class="button-bar">
+                <form action="/edit_payment" method="post">
+                    <input type="hidden" name="payment_id" value="{{ payment[0] }}">
+                    <button type="submit" class="edit-button">Edit</button>
+                </form>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <form action="/delete_payment" method="post">
+                    <input type="hidden" name="payment_id" value="{{ payment[0] }}">
+                    <button type="submit" class="delete-button">Delete</button>
+                </form>
+            </div>
         </li>
         {% endfor %}
-        <!-- Add more payment methods here -->
     </ul>
+
 </main>
 
 <footer>

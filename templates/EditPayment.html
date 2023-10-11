@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/AddPayment.css">
+    <title>Edit Payment Method</title>
+</head>
+<body>
+    <header>
+        <h1>Edit Payment Method</h1>
+    </header>
+
+    <main>
+        <form id="add-payment-form" method="POST" action="/confirm_edit">
+
+            <input type="hidden" name="payment_id" value="{{ pay_details[0] }}">
+            <label for="card-number">Card Number:</label>
+            <input type="text" id="card-number" name="card-number" value="{{ pay_details[1] }}">
+
+            <label for="cardholder-name">Cardholder's Name:</label>
+            <input type="text" id="cardholder-name" name="cardholder-name" value="{{ pay_details[2] }}">
+
+            <label for="expiry-date">Expiry Date:</label>
+            <input type="text" id="expiry-date" name="expiry-date" value="{{ pay_details[3] }}" >
+
+            <label for="cvv">CVV:</label>
+            <input type="text" id="cvv" name="cvv" value="{{ pay_details[4] }}">
+
+            <button id="add-payment-button" type="submit">Confirm</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Property Management System</p>
+    </footer>
+</body>
+
+{% endblock %}
+

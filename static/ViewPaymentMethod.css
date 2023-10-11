@@ -78,6 +78,10 @@ button:hover {
     background-color: #dc3545;
 }
 
+.button-bar{
+    display: flex;
+}
+
 /* Adjust the layout of the action bar */
 .action-bar {
     display: flex;
