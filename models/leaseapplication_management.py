@@ -32,5 +32,14 @@ class LeaseApplication:
         lease_application = self.mycursor.fetchone()
         return lease_application
 
+    def get_lease_application_by_agent(self, agent_id):
+        # Define the SQL query to select lease applications by agent_id
+        select_query = "SELECT la.* FROM leaseApplication AS la INNER JOIN property AS p ON la.property_id = p.property_id WHERE p.agent_id = %s"
+        parameter_data = (agent_id,)
+        self.mycursor.execute(select_query, parameter_data)
+        lease_application = self.mycursor.fetchall()
+        return lease_application
+
+
 
 

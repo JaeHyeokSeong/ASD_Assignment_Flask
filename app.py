@@ -248,6 +248,96 @@ def payment_history():
     invoices = invoice_management.get_invoices_by_status(tenant_id,"Paid")
     return render_template('PaymentHistory.html', invoices=invoices)
 
+@app.route('/request_lease/', methods=['GET','POST'])
+def request_lease():
+    tempPropId = 12345
+    tenant_id = session['user_id']
+    if request.method == 'POST':
+        startDate = request.form['start-date']
+        endDate = request.form['end-date']
+        status = "Pending"
+        description = request.form['desc']
+        leaseapplication_management.add_lease_application(startDate,endDate,status,description,tempPropId,tenant_id)
+        return redirect('/lease_application_success')
+    return render_template('RequestLease.html', property_id=tempPropId)
+
+@app.route('/lease_application_success')
+def lease_application_success():
+    return render_template('LeaseApplicationSuccess.html')
+
+@app.route('/view_requests', methods=['GET','POST'])
+def view_requests():
+    agent_id = session['user_id']
+    lease_applications = leaseapplication_management.get_lease_application_by_agent(agent_id)
+    requests = tenant_request_form_management.get_request_forms_by_agent_id(agent_id)
+    return render_template('AgentViewRequests.html', lease_applications=lease_applications, requests=requests)
+
+@app.route('/approve_lease', methods=['GET','POST'])
+def approve_lease():
+    leaseApp_id = request.form['leaseApp_id']
+    leaseapplication_management.update_lease_application_status(leaseApp_id,"Approved")
+    return redirect('/view_requests')
+
+@app.route('/reject_lease', methods=['GET','POST'])
+def reject_lease():
+    leaseApp_id = request.form['leaseApp_id']
+    leaseapplication_management.update_lease_application_status(leaseApp_id, "Rejected")
+    return redirect('/view_requests')
+@app.route('/approve_vacancy', methods=['GET','POST'])
+def approve_vacancy():
+    req_id = request.form['req_id']
+    tenant_request_form_management.update_status(req_id,"Approved")
+    return redirect('/view_requests')
+@app.route('/reject_vacancy', methods=['GET','POST'])
+def reject_vacancy():
+    req_id = request.form['req_id']
+    tenant_request_form_management.update_status(req_id, "Rejected")
+    return redirect('/view_requests')
+
+@app.route('/approve_extension', methods=['GET','POST'])
+def approve_extension():
+    req_id = request.form['req_id']
+    tenant_request_form_management.update_status(req_id, "Approved")
+    return redirect('/view_requests')
+@app.route('/reject_extension', methods=['GET','POST'])
+def reject_extension():
+    req_id = request.form['req_id']
+    tenant_request_form_management.update_status(req_id, "Rejected")
+    return redirect('/view_requests')
+
+@app.route('/lease_management', methods=['GET','POST'])
+def lease_management():
+    tenant_id = session['user_id']
+    leases = leaseapplication_management.get_lease_applications_by_tenant(tenant_id)
+    requests = tenant_request_form_management.get_request_forms_by_tenant_id(tenant_id)
+    return render_template('LeaseManagement.html', leases=leases, requests=requests)
+
+@app.route('/cancel_lease', methods=['GET','POST'])
+def cancel_lease():
+    leaseapp_id = request.form['leaseApp_id']
+    leaseapplication_management.update_lease_application_status(leaseapp_id,"Cancelled")
+    return redirect('lease_management')
+
+@app.route('/cancel_request', methods=['GET','POST'])
+def cancel_request():
+    req_id = request.form['req_id']
+    tenant_request_form_management.update_status(req_id,"Cancelled")
+    return redirect('lease_management')
+
+@app.route('/new_request', methods=['GET','POST'])
+def new_request():
+    if request.method == 'POST':
+        reqType = request.form['request-type']
+        desc = request.form['description']
+        newDate = request.form['date']
+        status = "Pending"
+        leaseApp_id = request.form['lease-id']
+        tenant_request_form_management.add_tenant_request_form(reqType,desc,newDate,status,leaseApp_id)
+        return redirect('/lease_management')
+    tenant_id = session['user_id']
+    leaseapps = leaseapplication_management.get_lease_applications_by_tenant(tenant_id)
+    return render_template('NewRequest.html', leaseapps=leaseapps)
+
 @app.route('/maintenance')
 def maintenance():
     # Logic for maintenance page

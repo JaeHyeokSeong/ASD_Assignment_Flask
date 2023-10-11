@@ -73,6 +73,9 @@
                 <div class="menu-item">
                     <a href="{{ url_for('properties') }}">Properties</a>
                 </div>
+               <div class="menu-item">
+                    <a href="{{ url_for('view_requests') }}">View Requests</a>
+                </div>
                 <div class="menu-item">
                     <a href="{{ url_for('leases') }}">Leases</a>
                 </div>
@@ -121,8 +124,11 @@
                <div class="menu-item">
                     <a href="{{ url_for('payment_history') }}">Payment History</a>
                 </div>
+               <div class="menu-item">
+                    <a href="{{ url_for('lease_management') }}">Lease Management</a>
+                </div>
                 <div class="menu-item">
-                    <a href="{{ url_for('maintenance') }}">Maintenance</a>
+                    <a href="{{ url_for('request_lease') }}">Request Lease (temp)</a>
                 </div>
             {% endif %}
         </div>

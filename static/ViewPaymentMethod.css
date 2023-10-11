@@ -77,11 +77,16 @@ button:hover {
 .delete-button {
     background-color: #dc3545;
 }
+.delete-button1{
+    background-color: #808080;
+}
 
 .button-bar{
     display: flex;
 }
-
+.approve-button{
+    background-color: limegreen;
+}
 /* Adjust the layout of the action bar */
 .action-bar {
     display: flex;
