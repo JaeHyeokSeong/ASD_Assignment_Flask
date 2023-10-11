@@ -31,6 +31,7 @@ stages:
     steps:
     - script: |
         pip install pytest pytest-cov flask mysql-connector
+        pip install pymysql
       displayName: 'Install modules'
     - script: |
         cd $(Build.Repository.LocalPath)
