@@ -2,7 +2,128 @@
 
 {% block content %}
 
-<h1>Contacts Feature Here</h1>
+{% if session['user_type'] == 'agent' %}
+    <h1>Associated Landlords</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Property</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+        </tr>
+        {% for contact in landlords_contacts %}
+        <tr>
+            <td>{{ contact.name }}</td>
+            <td>{{ contact.property }}</td>
+            <td>{{ contact.email }}</td>
+            <td>{{ contact.phone_number }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
+    <h1>Associated Tenants</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Property</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+        </tr>
+        {% for contact in tenants_contacts %}
+        <tr>
+            <td>{{ contact.name }}</td>
+            <td>{{ contact.property }}</td>
+            <td>{{ contact.email }}</td>
+            <td>{{ contact.phone_number }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% elif session['user_type'] == 'landlord' %}
+    <h1>Associated Agents</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Property</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+        </tr>
+        {% for contact in agents_contacts %}
+        <tr>
+            <td>{{ contact.name }}</td>
+            <td>{{ contact.property }}</td>
+            <td>{{ contact.email }}</td>
+            <td>{{ contact.phone_number }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h1>Associated Tenants</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Property</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+        </tr>
+        {% for contact in tenants_contacts %}
+        <tr>
+            <td>{{ contact.name }}</td>
+            <td>{{ contact.property }}</td>
+            <td>{{ contact.email }}</td>
+            <td>{{ contact.phone_number }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% elif session['user_type'] == 'tenant' %}
+    <h1>Associated Agents</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Property</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+        </tr>
+        {% for contact in agents_contacts %}
+        <tr>
+            <td>{{ contact.name }}</td>
+            <td>{{ contact.property }}</td>
+            <td>{{ contact.email }}</td>
+            <td>{{ contact.phone_number }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h1>Associated Landlords</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Property</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+        </tr>
+        {% for contact in landlords_contacts %}
+        <tr>
+            <td>{{ contact.name }}</td>
+            <td>{{ contact.property }}</td>
+            <td>{{ contact.email }}</td>
+            <td>{{ contact.phone_number }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+</style>
 
 {% endblock %}

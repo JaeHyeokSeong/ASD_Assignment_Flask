@@ -14,7 +14,6 @@
             min-height: 100vh;
         }
 
-
         .menu-container {
             width: 200px;
             background-color: #333;
@@ -56,9 +55,6 @@
 <body>
         <div class="menu-container">
             <div class="menu-box">
-
-
-
            {% if session['user_type'] == 'agent' %}
                 <!-- Menu items for Agent -->
                 <div class="menu-item">
@@ -80,7 +76,6 @@
                     <a href="{{ url_for('inspections') }}">Inspections</a>
                 </div>
             {% elif session['user_type'] == 'landlord' %}
-
                 <!-- Menu items for Landlord -->
                 <div class="menu-item">
                     <a href="{{ url_for('home') }}">Home</a>
@@ -98,7 +93,6 @@
                     <a href="{{ url_for('income') }}">Income</a>
                 </div>
             {% elif session['user_type'] == 'tenant' %}
-
                 <!-- Menu items for Tenant -->
                 <div class="menu-item">
                     <a href="{{ url_for('home') }}">Home</a>
@@ -129,5 +123,4 @@
         {% endblock %}
     </div>
 </body>
-
 </html>
