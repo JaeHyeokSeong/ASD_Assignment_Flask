@@ -395,13 +395,18 @@ def tenant_properties_apply(property_id, agent_id):
         return render_template('tenant_properties_apply.html', searched_property=searched_property[0])
     else:
         print(f'apply: {searched_property}')
-        return redirect(url_for('payments'))
+        return redirect(url_for('request_lease', property_id=searched_property[0]['property_id']))
 
 
 @app.route('/payments')
 def payments():
     # Logic for payments page
     return render_template('payments.html')
+
+
+@app.route('/request_lease/<int:property_id>/')
+def request_lease(property_id):
+    return f'Property ID: {property_id}'
 
 
 @app.route('/maintenance')
