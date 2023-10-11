@@ -1,0 +1,27 @@
+<head>
+    <title>Tenant Apply Management</title>
+</head>
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Apply Property</h1>
+
+    <fieldset>
+        <legend><h3>Property Details</h3></legend>
+        <h4>Agent ID</h4>
+        <p>{{searched_property['agent_id']}}</p>
+        <h4>Address</h4>
+        <p>{{searched_property['address']}}</p>
+        <h4>Price</h4>
+        <p>{{searched_property['price']}}</p>
+        <h4>Description</h4>
+        <p>{{searched_property['description']}}</p>
+    </fieldset>
+
+    <fieldset>
+        <legend><h3>Apply Property</h3></legend>
+        <form action="{{url_for('tenant_properties_apply', property_id=searched_property['property_id'], agent_id=searched_property['agent_id'])}}" method="post">
+            <input type="submit" value="Apply">
+        </form>
+    </fieldset>
+
+{% endblock %}

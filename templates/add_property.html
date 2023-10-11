@@ -1,0 +1,30 @@
+<head>
+    <title>Property Add Management</title>
+</head>
+{% extends 'base.html' %}
+{% block content %}
+<h1>Add Property</h1>
+
+<fieldset>
+    <form action="{{url_for('add_properties')}}" method="post">
+    <p><label for="landlord_id">Landlord ID</label></p>
+    <input type="number" name="landlord_id" id="landlord_id" placeholder="Enter Landlord ID" required autofocus>
+    <p><label for="agent_id">Agent ID</label></p>
+    <input type="number" name="agent_id" id="agent_id" value="{{agent_id}}" readonly required>
+    <p><label for="tenant_id">Tenant ID (If Exist)</label></p>
+    <input type="number" name="tenant_id" id="tenant_id" placeholder="Enter Tenant ID">
+    <p><label for="property_address">Address</label></p>
+    <input type="text" name="property_address" id="property_address" placeholder="Enter Property Address" required>
+    <p><label for="property_price">Rental Price</label></p>
+    <input type="text" name="property_price" id="property_price" placeholder="Enter Fortnight Price" required>
+    <p><label for="property_description">Description</label></p>
+    <textarea name="property_description" id="property_description" placeholder="Enter Description" required cols="20" rows="5"></textarea>
+    <p><label for="property_status">Status</label></p>
+    <select name="property_status" id="property_status" required>
+        <option value="empty" selected>Empty</option>
+        <option value="rented">Rented</option>
+    </select>
+    <p><input type="submit" value="Add"></p>
+</form>
+</fieldset>
+{% endblock %}

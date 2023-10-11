@@ -1,0 +1,44 @@
+<head>
+    <title>Property Update Management</title>
+</head>
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Update Property ID: {{property_id}} </h1>
+
+    <fieldset>
+        <table>
+            <th>Landlord ID</th>
+            <th>Agent ID</th>
+            <th>Tenant ID</th>
+            <th>Address</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Update</th>
+
+            <tr>
+                <form action="{{url_for('update_properties_id', property_id=property_id)}}" method="post">
+                    <td><input type="number" name="landlord_id" value="{{update_property['landlord_id']}}"></td>
+                    <td><input type="number" name="agent_id" value="{{update_property['agent_id']}}"></td>
+                    <td><input type="number" name="tenant_id" value="{{update_property['tenant_id']}}"></td>
+                    <td><input type="text" name="address" value="{{update_property['address']}}"></td>
+                    <td><input type="number" name="price" value="{{update_property['price']}}"></td>
+                    <td><textarea name="description" cols="20" rows="5">{{update_property['description']}}</textarea></td>
+                    <td>
+                        <select name="status" required>
+                            {% if update_property['status'] == 0%}
+                                <option value="empty" selected>Empty</option>
+                                <option value="rented">Rented</option>
+                            {% else %}
+                                <option value="empty">Empty</option>
+                                <option value="rented" selected>Rented</option>
+                            {% endif %}
+                        </select>
+                    </td>
+                    <td><input type="submit" value="Update"></td>
+                </form>
+            </tr>
+        </table>
+    </fieldset>
+
+{% endblock %}

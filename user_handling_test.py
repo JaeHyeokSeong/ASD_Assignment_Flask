@@ -4,6 +4,7 @@ from unittest.mock import Mock
 # Assuming your UserManagement class is in a file named user_management.py
 from models.user_management import UserManagement
 
+
 class TestUserManagement(unittest.TestCase):
 
     def setUp(self):

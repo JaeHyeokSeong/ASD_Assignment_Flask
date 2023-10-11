@@ -1,0 +1,13 @@
+<head>
+    <title>Property Catalogue Management</title>
+</head>
+{% extends 'base.html' %}
+{% block content %}
+<h1>Property Catalogue</h1>
+
+<fieldset>
+    <a href="{{url_for('add_properties')}}"><h3>Add Property</h3></a>
+    <a href="{{url_for('list_properties')}}"><h3>View Property List</h3></a>
+</fieldset>
+{% endblock %}
+
