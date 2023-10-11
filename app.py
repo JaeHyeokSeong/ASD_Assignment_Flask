@@ -155,22 +155,10 @@ def inspections():
     return render_template('inspections.html')
 
 
-@app.route('/landlord_properties')
-def landlord_properties():
-    # Logic for landlord properties page
-    return render_template('landlord_properties.html')
-
-
 @app.route('/income')
 def income():
     # Logic for income page
     return render_template('income.html')
-
-
-@app.route('/tenant_properties')
-def tenant_properties():
-    # Logic for tenant properties page
-    return render_template('tenant_properties.html')
 
 
 @app.route('/payments')
