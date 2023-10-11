@@ -15,11 +15,18 @@ app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
 mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="root1234",
+    # host="localhost",
+    # user="root",
+    # password="root1234",
+    # port='3306',
+    # database='python_db'
+    host="asd-spring2023.mysql.database.azure.com",
+    user="aljonn",
+    password="aljonn2023ASD",
     port='3306',
-    database='python_db'
+    database='python_db',
+    ssl_ca='./DigiCertGlobalRootCA.crt.pem'
+
 )
 
 mycursor = mydb.cursor()
@@ -212,12 +219,18 @@ def confirm_edit():
 @app.route('/invoices', methods=['GET','POST'])
 def invoices():
     tenant_id = session['user_id']
-    invoices = invoice_management.get_invoices_by_tenant(tenant_id)
-    return render_template('ViewInvoices.html', invoices=invoices)
+    myinvoices = invoice_management.get_invoices_by_tenant(tenant_id)
+    return render_template('ViewInvoices.html', invoices=myinvoices)
 @app.route('/select_invoice', methods=['GET','POST'])
 def select_invoice():
     invoice_id = request.form['invoice_id']
+    invoice = invoice_management.get_invoice_by_id(invoice_id)
+    property = invoice_management.get_property_by_id(invoice[4])
+    return render_template('InvoiceDetails.html',  invoice=invoice, property=property)
 
+@app.route('/select_payment', methods=['GET','POST'])
+def select_payment():
+    return render_template('PaymentMethod.html')
 
 @app.route('/maintenance')
 def maintenance():
