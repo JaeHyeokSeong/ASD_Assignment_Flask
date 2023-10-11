@@ -1,35 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
+
+{% extends 'base.html' %}
+{% block title %}View Payment History{% endblock %}
+{% block content %}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/PaymentHistory.css">
-    <title>Payment History</title>
+    <link rel="stylesheet" href="../static/ViewPaymentMethod.css">
+
 </head>
 <body>
 <header>
-    <h1>Payment History</h1>
+    <h1>View Payment History</h1>
 </header>
 
 <main>
-    <h2>Previous Payments</h2>
+    <div class="action-bar">
+        <h2>Paid Invoices</h2>
+    </div>
     <ul class="payment-list">
+        {% for invoice in invoices %}
         <li>
-            <a href="payment-details.html">Payment #1 - $500</a>
+                <span>Invoice {{ invoice[0] }}: $ {{ invoice[2] }}</span>
+                <span>Due Date: {{ invoice[1] }}</span>
+                <span>Status: {{ invoice[3] }}</span>
+                <span>Property ID: {{ invoice[4] }}</span>
         </li>
-        <li>
-            <a href="payment-details.html">Payment #2 - $300</a>
-        </li>
-        <li>
-            <a href="payment-details.html">Payment #3 - $700</a>
-        </li>
-        <!-- Add more payment items here -->
+        {% endfor %}
     </ul>
-    <button id="go-home-button">Go Back to Home</button>
+
 </main>
 
 <footer>
     <p>&copy; 2023 Property Management System</p>
 </footer>
 </body>
-</html>
+
+{% endblock %}
+
+

@@ -190,7 +190,6 @@ def addpayment():
         cvv = request.form['cvv']
         payment_management.add_payment_method(cardNumber, name, date, cvv, user_id)
         return redirect(url_for('payments'))
-
     return render_template('AddPayment.html')
 
 @app.route('/delete_payment', methods=['GET', 'POST'])
@@ -219,7 +218,7 @@ def confirm_edit():
 @app.route('/invoices', methods=['GET','POST'])
 def invoices():
     tenant_id = session['user_id']
-    myinvoices = invoice_management.get_invoices_by_tenant(tenant_id)
+    myinvoices = invoice_management.get_invoices_by_status(tenant_id,"Pending")
     return render_template('ViewInvoices.html', invoices=myinvoices)
 @app.route('/select_invoice', methods=['GET','POST'])
 def select_invoice():
@@ -230,7 +229,24 @@ def select_invoice():
 
 @app.route('/select_payment', methods=['GET','POST'])
 def select_payment():
-    return render_template('PaymentMethod.html')
+    invoice_id = request.form['invoice_id']
+    invoice = invoice_management.get_invoice_by_id(invoice_id)
+    user_id = session['user_id']
+    all_pay_methods = payment_management.get_all_payment_method(user_id)
+    return render_template('PaymentMethod.html', invoice=invoice, all_pay_methods=all_pay_methods)
+
+@app.route('/pay', methods=['GET','POST'])
+def pay():
+    pay_id = request.form['payment_id']
+    invoice_id = request.form['invoice_id']
+    invoice_management.pay_invoice(invoice_id)
+    return render_template('PaymentSuccess.html',)
+
+@app.route('/payment_history', methods=['GET','POST'])
+def payment_history():
+    tenant_id = session['user_id']
+    invoices = invoice_management.get_invoices_by_status(tenant_id,"Paid")
+    return render_template('PaymentHistory.html', invoices=invoices)
 
 @app.route('/maintenance')
 def maintenance():

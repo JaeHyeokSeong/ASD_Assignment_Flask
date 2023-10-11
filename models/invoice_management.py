@@ -23,9 +23,9 @@ class Invoice:
         invoice = self.mycursor.fetchone()
         return invoice
 
-    def get_invoices_by_status(self, status):
-        select_query = "SELECT * FROM invoice WHERE status = %s"
-        parameter_data = (status,)
+    def get_invoices_by_status(self, tenant_id, status):
+        select_query = "SELECT * FROM invoice WHERE tenant_id = %s and status = %s"
+        parameter_data = (tenant_id,status)
         self.mycursor.execute(select_query, parameter_data)
         invoices = self.mycursor.fetchall()
         return invoices
@@ -42,5 +42,9 @@ class Invoice:
         self.mycursor.execute(select_query, parameter_data)
         property = self.mycursor.fetchone()
         return property
-
+    def pay_invoice(self, invoice_id):
+        update_query = "UPDATE invoice SET status = %s WHERE invoice_id = %s"
+        parameter_data = ("Paid", invoice_id)
+        self.mycursor.execute(update_query, parameter_data)
+        self.mydb.commit()
 

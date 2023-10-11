@@ -20,7 +20,8 @@
         <p><strong>Property:</strong> {{ property[4]}}</p>
         <p><strong>Agent:</strong> {{ property[2]}}</p>
         <p><strong>Due Date:</strong> {{ invoice[1]}}</p>
-        <form action="/select_payment">
+        <form action="{{ url_for('select_payment') }}" method="post">
+            <input type="hidden" name="invoice_id" value="{{ invoice[0] }}">
         <button id="pay-button" type="submit"> Pay Invoice </button>
         </form>
     </main>

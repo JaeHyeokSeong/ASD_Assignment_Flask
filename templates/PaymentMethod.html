@@ -1,5 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,26 +18,21 @@
 <main>
     <div class="action-bar">
         <h2>Select Payment Method</h2>
-        <button id="add-payment-button">Add Payment Method</button>
     </div>
-    <ul class="payment-list">
+   <ul class="payment-list">
+        {% for payment in all_pay_methods %}
         <li>
-            <span>Credit Card - **** **** **** 1234</span>
-            <form action="PaymentSuccess.html">
-            <button class="select-button" type="submit">Select</button>
-            </form>
-            <button class="edit-button">Edit</button>
-            <button class="delete-button">Delete</button>
+                <span>Card {{ payment[0] }}: *************{{ payment[1] % 1000}}</span>
+            <div class="button-bar">
+                <form action="/pay" method="post">
+                    <input type="hidden" name="payment_id" value="{{ payment[0] }}">
+                    <input type="hidden" name="invoice_id" value="{{ invoice[0] }}">
+                    <button type="submit">Select</button>
+                </form>
+                &nbsp;
+            </div>
         </li>
-        <li>
-            <span>Bank Account - **** **** 9876</span>
-            <form action="PaymentSuccess.html">
-                <button class="select-button" type="submit">Select</button>
-            </form>
-            <button class="edit-button">Edit</button>
-            <button class="delete-button">Delete</button>
-        </li>
-        <!-- Add more payment methods here -->
+        {% endfor %}
     </ul>
 </main>
 
@@ -41,4 +40,8 @@
     <p>&copy; 2023 Property Management System</p>
 </footer>
 </body>
-</html>
+
+
+{% endblock %}
+
+
