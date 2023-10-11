@@ -5,18 +5,27 @@ import pymysql
 
 
 class PropertyCatalogue:
-    table = 'property'
+    table = 'properties'
 
     def __init__(self):
         self.python_db = None
 
     def connect_db(self):
         self.python_db = pymysql.connect(
-            user='root',
-            password='root1234',
-            host='127.0.0.1',
+            # local db
+            # user='root',
+            # password='root1234',
+            # host='127.0.0.1',
+            # db='python_db',
+            # charset='utf8'
+
+            # remote db
+            host="asd-spring2023.mysql.database.azure.com",
+            user="pascal",
+            password="asd2023Group3",
+            port=3306,
             db='python_db',
-            charset='utf8'
+            ssl_ca='./DigiCertGlobalRootCA.crt.pem'
         )
         return self.python_db
 
