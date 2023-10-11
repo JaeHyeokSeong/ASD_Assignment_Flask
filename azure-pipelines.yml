@@ -30,13 +30,11 @@ stages:
     displayName: 'Run Python Tests'
     steps:
     - script: |
-        pip install pytest
-        pip install pytest-cov
-        pip install flask
+        pip install pytest pytest-cov flask mysql-connector
       displayName: 'Install modules'
     - script: |
         cd $(Build.Repository.LocalPath)
-        python -m pytest $(Build.Repository.LocalPath)/*test.py --junitxml=test-unit.xml
+        python -m pytest -v $(Build.Repository.LocalPath)/*test.py --cov=my_module --junitxml=test-unit.xml
       displayName: 'Run Unit Tests'
     - task: PublishTestResults@2
       inputs:
