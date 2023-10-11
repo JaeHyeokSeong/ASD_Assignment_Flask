@@ -1,12 +1,60 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Landlord Properties</title>
+        <style>
+            /* Style for the table */
+            table {
+                border-collapse: collapse;
+                width: 80%; /* Adjust the width as needed */
+                margin: 20px; /* Add margin for spacing */
+            }
 
-    <h1>You are logged in as {{ session['user_type'] }}!</h1>
-    <p>Your Landlord User ID: {{ session['user_id'] }}</p>
+            /* Style for table headers */
+            th {
+                background-color: #f2f2f2; /* Light gray background */
+                border: 1px solid #dcdcdc; /* Border for headers */
+                padding: 8px; /* Padding for headers */
+            }
 
-
-<p> here add list of properties  </p>
-
+            /* Style for table cells */
+            td {
+                border: 1px solid #dcdcdc; /* Border for cells */
+                padding: 8px; /* Padding for cells */
+                word-wrap: break-word; /* Wrap long text to the next line */
+                max-width: 150px; /* Maximum width for a cell */
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Landlord Properties</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property ID</th>
+                    <th>Address</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for property in properties %}
+                    <tr>
+                        <td>{{ property[0] }}</td>
+                        <td>{{ property[4] }}</td>
+                        <td>${{ property[5] }}</td>
+                        <td>{{ property[6] }}</td>
+                        <td>{{ "Occupied" if property[7] else "Vacant" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+    </html>
 {% endblock %}
-

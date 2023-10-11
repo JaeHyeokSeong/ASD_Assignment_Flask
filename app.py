@@ -4,6 +4,7 @@ import mysql.connector
 import random
 import string
 from models.user_management import UserManagement
+from models.landlord_management import LandlordManagement
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -11,15 +12,19 @@ app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
 mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="root1234",
-    port='3306',
-    database='python_db'
+   user="pascal",
+   password= "asd2023Group3",
+   host="asd-spring2023.mysql.database.azure.com",
+   port=3306,
+   database="python_db",
+   ssl_ca="./DigiCertGlobalRootCA.crt.pem",
+
 )
 
 mycursor = mydb.cursor()
 user_management = UserManagement(mycursor, mydb)
+landlord_management = LandlordManagement(mycursor, mydb)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -122,10 +127,18 @@ def contacts():
     return render_template('contacts.html')
 
 
-@app.route('/properties')
-def properties():
-    # Logic for properties page
-    return render_template('properties.html')
+@app.route('/landlord_properties')
+def landlord_properties():
+    # Get the landlord ID from the session (assuming it's stored as 'user_id')
+    landlord_id = session.get('user_id')
+    print("Landlord ID:", landlord_id)
+
+    # Logic to fetch properties owned by the landlord
+    properties = landlord_management.get_landlord_properties(landlord_id)
+    print("Properties:", properties)
+
+    # Render the 'landlord_properties.html' template and pass the retrieved properties
+    return render_template('landlord_properties.html', properties=properties)
 
 
 @app.route('/leases')
@@ -140,16 +153,27 @@ def inspections():
     return render_template('inspections.html')
 
 
-@app.route('/landlord_properties')
-def landlord_properties():
-    # Logic for landlord properties page
-    return render_template('landlord_properties.html')
-
-
 @app.route('/income')
 def income():
-    # Logic for income page
-    return render_template('income.html')
+    user_id = session.get('user_id')  # Get user ID from the session
+
+    if user_id:
+        # Fetch properties owned by the landlord
+        properties = landlord_management.get_landlord_properties(user_id)
+
+        total_income = 0  # Initialize total income to 0
+
+        # Calculate the total income by iterating through the properties
+        for property in properties:
+            property_income = landlord_management.get_property_income(property[0])  # Access property ID at index 0
+            for record in property_income:
+                total_income += record['amount']
+
+        # Render the 'income.html' template and pass the total income
+        return render_template('income.html', total_income=total_income)
+    else:
+        # Redirect to the login page if the user is not authenticated
+        return redirect(url_for('login'))
 
 
 @app.route('/tenant_properties')
