@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import Mock, call
 from models.payment_management import PaymentMethod
+from HTMLTestRunner import HTMLTestRunner
 
 class TestPaymentManagement(unittest.TestCase):
     def setUp(self):
@@ -80,4 +81,8 @@ class TestPaymentManagement(unittest.TestCase):
         self.mock_db.commit.assert_called_once()
 
 if __name__ == "__main__":
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestPaymentManagement)
+    with open('unittest_results/test_payment_management_result.html', 'w') as f:
+        runner = HTMLTestRunner.HTMLTestRunner(stream=f, title='Unit Test Report for Payment')
+        runner.run(suite)
     unittest.main()
