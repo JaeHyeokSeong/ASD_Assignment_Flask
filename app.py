@@ -4,6 +4,7 @@ import mysql.connector
 from models.user_management import UserManagement
 from models.property_catalogue_management import PropertyCatalogue
 from models.contact_management import ContactManagement
+from models.landlord_management import LandlordManagement
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -22,6 +23,7 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 user_management = UserManagement(mycursor, mydb)
 contact_management = ContactManagement(mycursor, mydb)
+landlord_management = LandlordManagement(mycursor, mydb)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -339,8 +341,53 @@ def inspections():
 
 @app.route('/income')
 def income():
-    # Logic for income page
-    return render_template('income.html')
+    user_id = session.get('user_id')  # Get user ID from the session
+
+    if user_id:
+        # Fetch properties owned by the landlord
+        properties = landlord_management.get_landlord_properties(user_id)
+
+        total_income = 0  # Initialize total income to 0
+
+        property_incomes = []
+
+        # Calculate the total income and individual property incomes
+        for property in properties:
+            property_income = landlord_management.get_property_income(property[0])  # Access property ID at index 0
+
+            property_total_income = sum(record['amount'] for record in property_income)
+
+            total_income += property_total_income
+
+            # Add property income to the list
+            property_incomes.append({'property_id': property[0], 'income': property_total_income})
+
+        # Round the total income to two decimal places
+        total_income = round(total_income, 2)
+
+        # Round the income for each property in the list to two decimal places
+        for income_entry in property_incomes:
+            income_entry['income'] = round(income_entry['income'], 2)
+
+        # Render the 'income.html' template and pass the total income and property_incomes
+        return render_template('income.html', total_income=total_income, property_incomes=property_incomes)
+    else:
+        # Redirect to the login page if the user is not authenticated
+        return redirect(url_for('login'))
+
+
+@app.route('/landlord_properties')
+def landlord_properties():
+    # Get the landlord ID from the session (assuming it's stored as 'user_id')
+    landlord_id = session.get('user_id')
+    print("Landlord ID:", landlord_id)
+
+    # Logic to fetch properties owned by the landlord
+    properties = landlord_management.get_landlord_properties(landlord_id)
+    print("Properties:", properties)
+
+    # Render the 'landlord_properties.html' template and pass the retrieved properties
+    return render_template('landlord_properties.html', properties=properties)
 
 
 @app.route('/tenant_properties/')
