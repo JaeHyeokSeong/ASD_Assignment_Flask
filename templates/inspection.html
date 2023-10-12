@@ -1,0 +1,100 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Inspection</title>
+    <style>
+header {
+    text-align: center;
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 2em;
+}
+
+        form {
+    margin: 0 auto;
+    width: 50%;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+ .buttons a {
+            text-decoration: none;
+            background-color: #555;
+            color: #fff;
+            border-radius: 5px;
+            padding: 10px;
+            display: inline-block;
+            width: 120px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .buttons a:hover {
+            background-color: #777;
+        }
+
+button:hover {
+    background-color: #333;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+    </style>
+</head>
+<body>
+    <h1>Create Property Inspection</h1>
+     <div class="buttons">
+        <button> <a class="goto-inspections" href="/inspections"><br>View All Inspections</a></button>
+            </div>
+
+    <form action = "/inspection" method="POST" onsubmit="myalert()">
+        <div class="form-group">
+            <label for="property_id">Property ID:</label>
+        <input type="text" name="property_id" required><br><br>
+        </div>
+        <div class="form-group">
+             <label for="tenant_id">Tenant ID:</label>
+        <input type="text" name="tenant_id"><br><br>
+        </div>
+        <div class="form-group">
+             <label for="inspection_date">Inspection Date:</label>
+        <input type="date"  id="date" name="inspection_date" required><br><br>
+        </div>
+    <div class = ".center">
+
+       <button type="submit" class="submit-button">Submit</button>
+    </div>
+    </form>
+    <script>
+    function myalert() {
+        alert("Inspection Scheduled");
+    }
+</script>
+</body>
+</html>
+
+{% endblock %}
