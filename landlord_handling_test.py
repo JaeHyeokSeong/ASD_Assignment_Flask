@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 from models.landlord_management import LandlordManagement
-
+from HTMLTestRunner import HTMLTestRunner
 
 class TestLandlordManagement(unittest.TestCase):
     def setUp(self):
@@ -38,4 +38,8 @@ class TestLandlordManagement(unittest.TestCase):
 
 
 if __name__ == "__main__":
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestLandlordManagement)
+    with open('unittest_results/test_landlord_handling_result.html', 'w') as f:
+        runner = HTMLTestRunner.HTMLTestRunner(stream=f, title='Unit Test Report for Landlord')
+        runner.run(suite)
     unittest.main()
