@@ -65,3 +65,4 @@ if __name__ == '__main__':
     with open('unittest_results/test_property_catalogue_result.html', 'w') as f:
         runner = HTMLTestRunner.HTMLTestRunner(stream=f, title='Unit Test Report for Property')
         runner.run(suite)
+    main()
