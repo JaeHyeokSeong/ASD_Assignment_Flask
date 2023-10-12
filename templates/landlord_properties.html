@@ -30,6 +30,27 @@
                 max-width: 150px; /* Maximum width for a cell */
             }
         </style>
+
+
+        <script>
+            // JavaScript function to confirm property deletion
+            function confirmDelete(propertyID) {
+                if (confirm("Are you sure you want to delete this property?")) {
+                    // If confirmed, redirect to the Flask route for property deletion
+                    window.location.href = `/delete_landlord_property/${propertyID}`;
+
+
+                }
+            }
+
+
+        </script>
+
+
+
+
+
+
     </head>
     <body>
         <h1>Landlord Properties</h1>
@@ -42,6 +63,7 @@
                     <th>Description</th>
                     <th>Status
                     <th>Tenant ID</th>
+                    <th>Delete</th>
 
                 </tr>
             </thead>
@@ -54,10 +76,19 @@
                         <td>{{ property[3] }}</td>
                         <td>{{ "Occupied" if property[4] else "Vacant" }}</td>
                         <td>{{ property[5] }}</td>
+                        <td>
+                            <button class="delete-button"
+                                    onclick="confirmDelete({{ property[0] }})">
+                                Delete
+                            </button>
+                        </td>
+
                     </tr>
+
                 {% endfor %}
             </tbody>
         </table>
+
 
     </body>
     </html>

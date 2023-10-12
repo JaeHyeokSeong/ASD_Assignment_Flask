@@ -17,3 +17,11 @@ class LandlordManagement:
 
         income = [dict(zip(column_names, row)) for row in results]
         return income
+
+
+    def delete_landlord_properties(self, property_id):
+        # Implement code to delete the property with the given property_id from the database.
+        # You can use SQL queries to delete the property.
+        delete_query = "DELETE FROM properties WHERE property_id = %s"
+        self.mycursor.execute(delete_query, (property_id,))
+        self.mydb.commit()
