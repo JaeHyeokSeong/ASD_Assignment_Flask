@@ -1,0 +1,50 @@
+
+{% extends 'base.html' %}
+{% block title %}Payment Methods{% endblock %}
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/ViewPaymentMethod.css">
+
+</head>
+<body>
+<header>
+    <h1>Payment Methods</h1>
+</header>
+
+<main>
+    <div class="action-bar">
+        <h2>Manage Payment Method</h2>
+    <a href='{{url_for('addpayment')}}' class="button-link"> Add Payment Method </a>
+    </div>
+    <ul class="payment-list">
+        {% for payment in all_pay_methods %}
+        <li>
+                <span>Card {{ payment[0] }}: *************{{ payment[1][-4:]}}</span>
+            <div class="button-bar">
+                <form action="/edit_payment" method="post">
+                    <input type="hidden" name="payment_id" value="{{ payment[0] }}">
+                    <button type="submit" class="edit-button">Edit</button>
+                </form>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <form action="/delete_payment" method="post">
+                    <input type="hidden" name="payment_id" value="{{ payment[0] }}">
+                    <button type="submit" class="delete-button">Delete</button>
+                </form>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+</main>
+
+<footer>
+    <p>&copy; 2023 Property Management System</p>
+</footer>
+</body>
+
+{% endblock %}
+
+

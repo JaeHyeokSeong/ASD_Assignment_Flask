@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/PaymentSuccess.css">
+    <title>Payment Confirmed</title>
+</head>
+<body>
+<header>
+    <h1>Payment Confirmed</h1>
+</header>
+
+<main>
+    <p>Your payment has been successfully confirmed <span class="checkmark">&#10004;</span>.</p>
+    <div class="buttons">
+        <form action="{{ url_for('home') }}">
+        <button id="go-home-button">Go Back to Home</button>
+        </form>
+        <form action="/payment_history">
+        <button id="view-history-button" type="submit">View Payment History</button>
+        </form>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2023 Property Management System</p>
+</footer>
+</body>
+
+
+{% endblock %}
+
+

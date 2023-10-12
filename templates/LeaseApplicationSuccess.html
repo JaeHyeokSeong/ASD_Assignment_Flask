@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/PaymentSuccess.css">
+</head>
+<body>
+<header>
+    <h1>Lease Application Submitted</h1>
+</header>
+
+<main>
+    <p>Your application has been successfully submitted <span class="checkmark">&#10004;</span>.</p>
+    <div class="buttons">
+        <form action="/home">
+        <button id="go-home-button">Go Back to Home</button>
+        </form>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2023 Property Management System</p>
+</footer>
+</body>
+
+
+{% endblock %}
+
+
