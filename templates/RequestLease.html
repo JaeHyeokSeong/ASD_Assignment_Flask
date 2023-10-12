@@ -21,14 +21,13 @@
             {% endif %}
 
     <main>
-        <form action="/request_lease/" method="POST">
+        <form action="{{url_for('request_lease', apply_property_id=property_id)}}" method="POST">
             <label for="start-date">Start Date:</label>
             <input type="date" id="start-date" name="start-date">
             <label for="end-date">End Date:</label>
             <input type="date" id="end-date" name="end-date" >
             <label for="desc">Purposed Use of Premise:</label>
             <input type="text" id="desc" name="desc">
-
             <button id="add-payment-button" type="submit">Apply</button>
         </form>
     </main>

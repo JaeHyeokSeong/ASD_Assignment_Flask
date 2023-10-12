@@ -452,7 +452,8 @@ def tenant_properties_apply(property_id, agent_id):
         return render_template('tenant_properties_apply.html', searched_property=searched_property[0])
     else:
         print(f'apply: {searched_property}')
-        return redirect(url_for('request_lease', property_id=searched_property[0]['property_id']))
+        return redirect(url_for('request_lease', apply_property_id=searched_property[0]['property_id']))
+        # return render_template('RequestLease.html', property_id=searched_property[0]['property_id'])
 
 
 @app.route('/payments', methods=['GET', 'POST'])
@@ -568,8 +569,8 @@ def payment_history():
     invoices = invoice_management.get_invoices_by_status(tenant_id,"Paid")
     return render_template('PaymentHistory.html', invoices=invoices)
 
-@app.route('/request_lease/', methods=['GET','POST'])
-def request_lease():
+@app.route('/request_lease/<int:apply_property_id>', methods=['GET','POST'])
+def request_lease(apply_property_id):
     error = []
     tempPropId = 7126391
     tenant_id = session['user_id']
@@ -584,9 +585,10 @@ def request_lease():
         if len(description) < 1:
             error.append("Please enter a description.")
         if not error:
-            leaseapplication_management.add_lease_application(startDate,endDate,status,description,tempPropId,tenant_id)
+            leaseapplication_management.add_lease_application(startDate,endDate,status,description,apply_property_id,tenant_id)
             return redirect('/lease_application_success')
-    return render_template('RequestLease.html', property_id=tempPropId, error=error)
+
+    return render_template('RequestLease.html', property_id=apply_property_id, error=error)
 
 
 
