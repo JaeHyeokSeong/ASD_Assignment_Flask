@@ -44,3 +44,5 @@ class LandlordManagement:
         parameter_data = (date, amount, property_id)
         self.mycursor.execute(insert_query, parameter_data)
         self.mydb.commit()
+
+
