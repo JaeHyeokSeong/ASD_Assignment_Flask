@@ -1,0 +1,37 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../static/InvoiceDetails.css">
+        <title>Invoice Details</title>
+    </head>
+    <body>
+    <header>
+        <h1>Invoice Details</h1>
+    </header>
+
+    <main>
+        <h2>Invoice {{ invoice[0] }}</h2>
+        <p><strong>Amount:</strong> $ {{ invoice[2] }}</p>
+        <p><strong>Property:</strong> {{ property[4]}}</p>
+        <p><strong>Agent:</strong> {{ property[2]}}</p>
+        <p><strong>Due Date:</strong> {{ invoice[1]}}</p>
+        <form action="{{ url_for('select_payment') }}" method="post">
+            <input type="hidden" name="invoice_id" value="{{ invoice[0] }}">
+        <button id="pay-button" type="submit"> Pay Invoice </button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Property Management System</p>
+    </footer>
+    </body>
+
+{% endblock %}
+
+
+

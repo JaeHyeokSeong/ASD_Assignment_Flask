@@ -1,0 +1,109 @@
+
+{% extends 'base.html' %}
+{% block title %}View Requests{% endblock %}
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/ViewPaymentMethod.css">
+
+</head>
+<body>
+<header>
+    <h1>View Requests</h1>
+</header>
+
+<main>
+    <div class="action-bar">
+        <h2>Lease Requests</h2>
+        <a href='{{url_for('new_request')}}' class="button-link"> New Request </a>
+    </div>
+    <ul class="payment-list">
+        {% for lease_app in leases %}
+            <li>
+            <span>LA#{{lease_app[0]}} - Property# {{ lease_app[5] }}</span>
+            <span>Start Date: {{ lease_app[1] }}</span>
+                <span>End Date: {{ lease_app[2] }}</span>
+                <span>Description: {{ lease_app[4] }}</span>
+                <span>Status: {{ lease_app[3] }}</span>
+            <div class="button-bar">
+        {% if lease_app[3] == 'Pending' %}        &nbsp;
+                <form action="/cancel_lease" method="post">
+                    <input type="hidden" name="leaseApp_id" value="{{ lease_app[0] }}">
+                    <button type="submit" class="delete-button">Cancel</button>
+                </form>
+        {% else %}
+                    <button type="submit" class="delete-button1" disabled>Cancel</button>
+        {% endif %}
+            </div>
+            </li>
+
+        {% endfor %}
+    </ul>
+<br/>
+    <div class="action-bar">
+        <h2>Vacancy Notice Requests</h2>
+    </div>
+
+     <ul class="payment-list">
+        {% for req in requests %}
+        {% if req[1] == "Vacancy" %}
+            <li>
+            <span>VR#{{ req[0] }} for LA#{{req[5]}}</span>&nbsp;&nbsp;
+                <span>Vacancy Date: {{ req[3] }}</span> &nbsp;&nbsp;
+                <span>Description: {{ req[2] }}</span> &nbsp;&nbsp;
+                <span>Status: {{ req[4] }}</span>&nbsp;&nbsp;
+            <div class="button-bar">
+                &nbsp;&nbsp;
+                {% if req[4] == 'Pending' %}        &nbsp;
+                <form action="/cancel_request" method="post">
+                    <input type="hidden" name="req_id" value="{{ req[0] }}">
+                    <button type="submit" class="delete-button">Cancel</button>
+                </form>
+        {% else %}
+                    <button type="submit" class="delete-button1" disabled>Cancel</button>
+        {% endif %}
+            </div>
+            </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+<br/>
+    <div class="action-bar">
+        <h2>Lease Extension  Requests</h2>
+    </div>
+    <ul class="payment-list">
+            {% for req in requests %}
+            {% if req[1] == "Extension" %}
+                <li>
+                <span>ER#{{req[0]}} for LA#{{req[5]}}</span>&nbsp;&nbsp;
+                    <span>Extension Date: {{req[3] }}</span>&nbsp;&nbsp;
+                    <span>Description: {{ req[2] }}</span>&nbsp;&nbsp;
+                    <span>Status: {{ req[4] }}</span>&nbsp;&nbsp;
+
+                <div class="button-bar">
+                    {% if req[4] == 'Pending' %}        &nbsp;
+                <form action="/cancel_request" method="post">
+                    <input type="hidden" name="req_id" value="{{ req[0] }}">
+                    <button type="submit" class="delete-button">Cancel</button>
+                </form>
+        {% else %}
+                    <button type="submit" class="delete-button1" disabled>Cancel</button>
+        {% endif %}
+                </div>
+
+                </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+</main>
+
+<footer>
+    <p>&copy; 2023 Property Management System</p>
+</footer>
+</body>
+
+{% endblock %}
+
+

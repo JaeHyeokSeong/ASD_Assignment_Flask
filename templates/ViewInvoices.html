@@ -1,0 +1,44 @@
+
+{% extends 'base.html' %}
+{% block title %}View Invoices{% endblock %}
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/ViewPaymentMethod.css">
+
+</head>
+<body>
+<header>
+    <h1>View Invoices</h1>
+</header>
+
+<main>
+    <div class="action-bar">
+        <h2>Invoices</h2>
+    </div>
+    <ul class="payment-list">
+        {% for invoice in invoices %}
+        <li>
+                <span>Invoice {{ invoice[0] }}: $ {{ invoice[2] }}</span>
+            <div class="button-bar">
+                <form action="/select_invoice" method="post">
+                    <input type="hidden" name="invoice_id" value="{{ invoice[0] }}">
+                    <button type="submit">Select</button>
+                </form>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+</main>
+
+<footer>
+    <p>&copy; 2023 Property Management System</p>
+</footer>
+</body>
+
+{% endblock %}
+
+

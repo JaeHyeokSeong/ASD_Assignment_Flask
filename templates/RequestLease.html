@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/AddPayment.css">
+    <title>Request Lease</title>
+</head>
+<body>
+    <header>
+        <h1>Lease Application</h1>
+    </header>
+
+    {% if error %}
+                {% for err in error %}
+            <div style="color:maroon;background-color:pink;text-align: center">{{ err }}</div>
+                {% endfor %}
+            {% endif %}
+
+    <main>
+        <form action="/request_lease/" method="POST">
+            <label for="start-date">Start Date:</label>
+            <input type="date" id="start-date" name="start-date">
+            <label for="end-date">End Date:</label>
+            <input type="date" id="end-date" name="end-date" >
+            <label for="desc">Purposed Use of Premise:</label>
+            <input type="text" id="desc" name="desc">
+
+            <button id="add-payment-button" type="submit">Apply</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Property Management System</p>
+    </footer>
+</body>
+
+{% endblock %}
+
