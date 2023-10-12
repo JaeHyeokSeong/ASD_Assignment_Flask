@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import Flask, request, render_template, redirect, url_for, session, jsonify
 from flask_session import Session
 import mysql.connector
 from models.user_management import UserManagement
@@ -37,6 +37,17 @@ leaseapplication_management = LeaseApplication(mycursor, mydb)
 tenant_request_form_management = TenantRequestForm(mycursor,mydb)
 property_maintenance = propertyMaintenance(mycursor,mydb)
 property_inspection = propertyInspection(mycursor,mydb)
+
+
+@app.route('/delete_landlord_property/<int:property_id>', methods=['GET'])
+def delete_landlord_properties(property_id):
+    # Use your LandlordManagement class to delete the property
+    landlord_management.delete_landlord_properties(property_id)
+
+    # After deletion, you can redirect to the landlord's properties page
+    return redirect(url_for('landlord_properties'))
+
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -395,7 +406,7 @@ def income():
         for property in properties:
             property_income = landlord_management.get_property_income(property[0])  # Access property ID at index 0
 
-            property_total_income = sum(record['amount'] for record in property_income)
+            property_total_income = sum(record['amount'] for record in property_income if record['amount'] is not None)
 
             total_income += property_total_income
 
