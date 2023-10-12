@@ -3,7 +3,8 @@
 # https://www.daleseo.com/python-unittest-mock-patch/ [how to write unit test]
 from unittest import TestCase, main
 from models.property_catalogue_management import PropertyCatalogue
-
+from HTMLTestRunner import HTMLTestRunner
+import unittest
 
 test_add_property_data = {
     'landlord_id': -1,
@@ -60,4 +61,8 @@ class PropertyCatalogues(TestCase):
 
 
 if __name__ == '__main__':
+    suite = unittest.TestLoader().loadTestsFromTestCase(PropertyCatalogues)
+    with open('unittest_results/test_property_catalogue_result.html', 'w') as f:
+        runner = HTMLTestRunner.HTMLTestRunner(stream=f, title='Unit Test Report for Property')
+        runner.run(suite)
     main()
