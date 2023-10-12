@@ -32,6 +32,7 @@ stages:
     - script: |
         pip install pytest pytest-cov flask mysql-connector
         pip install pymysql
+        pip install HTMLTestRunner
       displayName: 'Install modules'
     - script: |
         cd $(Build.Repository.LocalPath)
