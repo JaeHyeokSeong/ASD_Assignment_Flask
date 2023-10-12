@@ -253,7 +253,7 @@ def list_properties():
     tmp = []
     if search_keyword_address != '':
         for fil_prop in all_properties:
-            if fil_prop['address'].lower() != search_keyword_address.lower():
+            if search_keyword_address.lower() not in fil_prop['address'].lower():
                 tmp.append(fil_prop)
 
         for t in tmp:
