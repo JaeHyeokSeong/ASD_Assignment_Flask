@@ -121,7 +121,6 @@ body {
             <div class="input-container">
                 <input type="password" id="password" name="password" placeholder="Password" required>
             </div>
-            <!-- Add a hidden input field for user type -->
             <input type="hidden" id="userType" name="userType">
             <br>
             <div class="button-container">
@@ -132,7 +131,8 @@ body {
     </div>
 
 <script>
-    // JavaScript to handle user type selection and form submission
+
+
 const loginButton = document.getElementById("login-button");
 const tenantButton = document.querySelector("[data-type='tenant']");
 const agentButton = document.querySelector("[data-type='agent']");
@@ -160,23 +160,14 @@ function highlightUserTypeButton(button) {
     landlordButton.classList.remove("selected-user-type");
 
     button.classList.add("selected-user-type");
-    // Set text color to black when the button is selected
     button.style.color = "#fff";
 }
 
-// Form submission using JavaScript
 loginButton.addEventListener("click", function (e) {
-    // Prevent the form from submitting normally
     e.preventDefault();
-    // Submit the form using JavaScript
     document.getElementById("login-form").submit();
 });
 
 </script>
-
-
-
-
 </body>
-
 </html>
