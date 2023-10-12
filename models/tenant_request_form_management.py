@@ -30,8 +30,14 @@ class TenantRequestForm:
         request_forms = self.mycursor.fetchall()
         return request_forms
 
+    # def get_request_forms_by_tenant_id(self, tenant_id):
+    #     select_query = "SELECT t.* FROM tenantRequestForm AS t INNER JOIN leaseapplication AS l ON t.leaseApp_id = l.leaseApp_id INNER JOIN properties AS p ON l.property_id = p.property_id WHERE p.tenant_id = %s"
+    #     parameter_data = (tenant_id,)
+    #     self.mycursor.execute(select_query, parameter_data)
+    #     request_forms = self.mycursor.fetchall()
+    #     return request_forms
     def get_request_forms_by_tenant_id(self, tenant_id):
-        select_query = "SELECT t.* FROM tenantRequestForm AS t INNER JOIN leaseapplication AS l ON t.leaseApp_id = l.leaseApp_id INNER JOIN properties AS p ON l.property_id = p.property_id WHERE p.tenant_id = %s"
+        select_query = "SELECT t.* FROM tenantRequestForm AS t INNER JOIN leaseapplication AS l ON t.leaseApp_id = l.leaseApp_id WHERE l.tenant_id = %s"
         parameter_data = (tenant_id,)
         self.mycursor.execute(select_query, parameter_data)
         request_forms = self.mycursor.fetchall()
