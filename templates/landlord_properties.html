@@ -40,21 +40,25 @@
                     <th>Address</th>
                     <th>Price</th>
                     <th>Description</th>
-                    <th>Status</th>
+                    <th>Status
+                    <th>Tenant ID</th>
+
                 </tr>
             </thead>
             <tbody>
                 {% for property in properties %}
                     <tr>
                         <td>{{ property[0] }}</td>
-                        <td>{{ property[4] }}</td>
-                        <td>${{ property[5] }}</td>
-                        <td>{{ property[6] }}</td>
-                        <td>{{ "Occupied" if property[7] else "Vacant" }}</td>
+                        <td>{{ property[1] }}</td>
+                        <td>${{ property[2] }}</td>
+                        <td>{{ property[3] }}</td>
+                        <td>{{ "Occupied" if property[4] else "Vacant" }}</td>
+                        <td>{{ property[5] }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+
     </body>
     </html>
 {% endblock %}

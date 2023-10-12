@@ -152,6 +152,11 @@ def inspections():
     # Logic for inspections page
     return render_template('inspections.html')
 
+# ... Your other imports and app setup ...
+
+# ... Your other imports and app setup ...
+
+# ... Your other imports and app setup ...
 
 @app.route('/income')
 def income():
@@ -163,17 +168,33 @@ def income():
 
         total_income = 0  # Initialize total income to 0
 
-        # Calculate the total income by iterating through the properties
+        property_incomes = []
+
+        # Calculate the total income and individual property incomes
         for property in properties:
             property_income = landlord_management.get_property_income(property[0])  # Access property ID at index 0
-            for record in property_income:
-                total_income += record['amount']
 
-        # Render the 'income.html' template and pass the total income
-        return render_template('income.html', total_income=total_income)
+            property_total_income = sum(record['amount'] for record in property_income)
+
+            total_income += property_total_income
+
+            # Add property income to the list
+            property_incomes.append({'property_id': property[0], 'income': property_total_income})
+
+        # Round the total income to two decimal places
+        total_income = round(total_income, 2)
+
+        # Round the income for each property in the list to two decimal places
+        for income_entry in property_incomes:
+            income_entry['income'] = round(income_entry['income'], 2)
+
+        # Render the 'income.html' template and pass the total income and property_incomes
+        return render_template('income.html', total_income=total_income, property_incomes=property_incomes)
     else:
         # Redirect to the login page if the user is not authenticated
         return redirect(url_for('login'))
+
+# ... The rest of your app code ...
 
 
 @app.route('/tenant_properties')
