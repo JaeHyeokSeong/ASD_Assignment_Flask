@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 from models.user_management import UserManagement
-
+from HTMLTestRunner import HTMLTestRunner
 
 class TestUserManagement(unittest.TestCase):
 
@@ -36,4 +36,8 @@ class TestUserManagement(unittest.TestCase):
 
 
 if __name__ == "__main__":
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestUserManagement)
+    with open('unittest_results/test_user_handling_result.html', 'w') as f:
+        runner = HTMLTestRunner.HTMLTestRunner(stream=f, title='Unit Test Report for User')
+        runner.run(suite)
     unittest.main()
