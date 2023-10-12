@@ -9,6 +9,8 @@ from models.payment_management import PaymentMethod
 from models.invoice_management import Invoice
 from models.leaseapplication_management import LeaseApplication
 from models.tenant_request_form_management import TenantRequestForm
+from models.propertyMaintenance import propertyMaintenance
+from models.propertyInspection import propertyInspection
 from datetime import datetime
 
 app = Flask(__name__)
@@ -33,6 +35,8 @@ payment_management = PaymentMethod(mycursor, mydb)
 invoice_management = Invoice(mycursor,mydb)
 leaseapplication_management = LeaseApplication(mycursor, mydb)
 tenant_request_form_management = TenantRequestForm(mycursor,mydb)
+property_maintenance = propertyMaintenance(mycursor,mydb)
+property_inspection = propertyInspection(mycursor,mydb)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -343,10 +347,36 @@ def leases():
     return render_template('leases.html')
 
 
-@app.route('/inspections')
-def inspections():
+
+@app.route('/inspection',  methods=['GET', 'POST'])
+def inspection():
+    user_id = session.get('user_id')
+    submission_successful = False  # Default to False
+
+    if request.method == 'POST':
+        property_id = request.form['property_id']
+        agent_id = user_id
+        tenant_id = request.form['tenant_id']
+        inspection_date = request.form['inspection_date']
+        inspection_id = property_inspection.generate_random_id()
+
+        property_inspection.add_inspection_to_database(inspection_id,property_id, agent_id,tenant_id,inspection_date)
+        submission_successful = True
+
+    return render_template('inspection.html', submission_successful=submission_successful)
     # Logic for inspections page
-    return render_template('inspections.html')
+
+
+@app.route('/inspections', methods=['GET', 'POST'])
+def inspections():
+    user_id = session.get('user_id')  # Get user ID from session or None if not present
+
+    inspection_info = property_inspection.get_inspection_info_from_database(user_id)
+    print("Fetched inspection info:", inspection_info)
+
+    for info in inspection_info:
+        info = inspection_info if inspection_info else ("")
+    return render_template('inspections.html',info=info)
 
 
 @app.route('/income')
@@ -691,10 +721,35 @@ def new_request():
     leaseapps = leaseapplication_management.get_lease_applications_by_tenant(tenant_id)
     return render_template('NewRequest.html', leaseapps=leaseapps, error=error)
 
-@app.route('/maintenance')
+@app.route('/maintenance',  methods=['GET', 'POST'])
 def maintenance():
+    user_id = session.get('user_id')
+    submission_successful = False  # Default to False
+
+    if request.method == 'POST':
+        property_id = request.form['p_id']
+        tenant_id = user_id
+        issue = request.form['issue']
+        issue_description = request.form['complain']
+        maintenance_id = property_maintenance.generate_random_id()
+
+        property_maintenance.add_maintenance_to_database(maintenance_id, property_id, tenant_id, issue, issue_description)
+        submission_successful = True
+
+    return render_template('maintenance.html', submission_successful=submission_successful)
     # Logic for maintenance page
-    return render_template('maintenance.html')
+
+
+@app.route('/maintenances', methods=['GET'])
+def maintenances():
+    user_id = session.get('user_id')  # Get user ID from session or None if not present
+
+    maintenance_info = property_maintenance.get_maintenance_info_from_database(user_id)
+    print("Fetched maintenance info:", maintenance_info)
+
+    for info in maintenance_info:
+        info = maintenance_info if maintenance_info else ("")
+    return render_template('maintenances.html',info=info)
 
 
 @app.route('/logout')
