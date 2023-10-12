@@ -9,7 +9,15 @@
     <title>Tenant Request Form</title>
 </head>
 <body>
+
     <h1>Tenant Request Form</h1>
+
+    {% if error %}
+                {% for err in error %}
+            <div style="color:maroon;background-color:pink;text-align: center">{{ err }}</div>
+                {% endfor %}
+            {% endif %}
+
     <form action="/new_request" method="post" style="text-align: center">
         <label for="request-type">Request Type:</label>
         <select id="request-type" name="request-type" required>

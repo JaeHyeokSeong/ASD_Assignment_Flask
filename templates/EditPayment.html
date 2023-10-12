@@ -14,6 +14,12 @@
         <h1>Edit Payment Method</h1>
     </header>
 
+    {% if error %}
+                {% for err in error %}
+            <div style="color:maroon;background-color:pink;text-align: center">{{ err }}</div>
+                {% endfor %}
+            {% endif %}
+
     <main>
         <form id="add-payment-form" method="POST" action="/confirm_edit">
 

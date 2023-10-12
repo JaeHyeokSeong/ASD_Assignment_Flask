@@ -20,25 +20,25 @@
     </div>
     <ul class="payment-list">
         {% for lease_app in lease_applications %}
-        {% if lease_app[3] == 'Pending' %}
-            <li>
-            <span>Lease Application {{ lease_app[0] }} for Property {{ lease_app[5] }}</span>
-            <span>Start Date: {{ lease_app[1] }}</span>
-                <span>End Date: {{ lease_app[2] }}</span>
-                <span>Description: {{ lease_app[4] }}</span>
-            <div class="button-bar">
-                <form action="/approve_lease" method="post">
-                    <input type="hidden" name="leaseApp_id" value="{{ lease_app[0] }}">
-                    <button type="submit" class="approve-button">Approve</button>
-                </form>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <form action="/reject_lease" method="post">
-                    <input type="hidden" name="leaseApp_id" value="{{ lease_app[0] }}">
-                    <button type="submit" class="delete-button">Reject</button>
-                </form>
-            </div>
-            </li>
-        {% endif %}
+            {% if lease_app[3] == "Pending"%}
+                <li>
+                <span>Lease Application {{ lease_app[0] }} for Property {{ lease_app[5] }}</span>
+                <span>Start Date: {{ lease_app[1] }}</span>
+                    <span>End Date: {{ lease_app[2] }}</span>
+                    <span>Description: {{ lease_app[4] }}</span>
+                <div class="button-bar">
+                    <form action="/approve_lease" method="post">
+                        <input type="hidden" name="leaseApp_id" value="{{ lease_app[0] }}">
+                        <button type="submit" class="approve-button">Approve</button>
+                    </form>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <form action="/reject_lease" method="post">
+                        <input type="hidden" name="leaseApp_id" value="{{ lease_app[0] }}">
+                        <button type="submit" class="delete-button">Reject</button>
+                    </form>
+                </div>
+                </li>
+            {% endif %}
         {% endfor %}
     </ul>
     <div class="action-bar">
@@ -47,13 +47,13 @@
 
      <ul class="payment-list">
         {% for req in requests %}
-        {% if req[1] == "Vacancy" %}
+        {% if req[1] == "Vacancy" and req[4] == "Pending"%}
             <li>
             <span>Vacancy Request {{ req[0] }} for Lease App {{ req[5]}}</span>
                 <span>Vacancy Date: {{ req[3] }}</span>
                 <span>Description: {{ req[2] }}</span>
             <div class="button-bar">
-                <form action="/approve_vacancy" method="post">
+                <form action="/approve_request" method="post">
                     <input type="hidden" name="req_id" value="{{ req[0] }}">
                     <button type="submit" class="approve-button">Approve</button>
                 </form>
@@ -73,13 +73,13 @@
     </div>
     <ul class="payment-list">
             {% for req in requests %}
-            {% if req[1] == "Extension" %}
+            {% if req[1] == "Extension" and req[4] == "Pending"%}
                 <li>
                 <span>Extension Request {{ req[0] }} for Lease App {{ req[5]}}</span>
                     <span>Extension Date: {{ req[3] }}</span>
                     <span>Description: {{ req[2] }}</span>
                 <div class="button-bar">
-                    <form action="/approve_extension" method="post">
+                    <form action="/approve_request" method="post">
                         <input type="hidden" name="req_id" value="{{ req[0] }}">
                         <button type="submit" class="approve-button">Approve</button>
                     </form>

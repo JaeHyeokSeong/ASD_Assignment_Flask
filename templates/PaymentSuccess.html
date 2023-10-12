@@ -16,7 +16,7 @@
 <main>
     <p>Your payment has been successfully confirmed <span class="checkmark">&#10004;</span>.</p>
     <div class="buttons">
-        <form action="home.html">
+        <form action="{{ url_for('home') }}">
         <button id="go-home-button">Go Back to Home</button>
         </form>
         <form action="/payment_history">

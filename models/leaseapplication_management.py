@@ -25,6 +25,12 @@ class LeaseApplication:
         self.mycursor.execute(update_query, parameter_data)
         self.mydb.commit()
 
+    def update_lease_application_end_date(self, leaseApp_id, new_end_date):
+        update_query = "UPDATE leaseApplication SET endDate = %s WHERE leaseApp_id = %s"
+        parameter_data = (new_end_date, leaseApp_id)
+        self.mycursor.execute(update_query, parameter_data)
+        self.mydb.commit()
+
     def get_lease_application_by_id(self, leaseApp_id):
         select_query = "SELECT * FROM leaseApplication WHERE leaseApp_id = %s"
         parameter_data = (leaseApp_id,)

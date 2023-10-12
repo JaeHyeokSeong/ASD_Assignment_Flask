@@ -14,8 +14,14 @@
         <h1>Lease Application</h1>
     </header>
 
+    {% if error %}
+                {% for err in error %}
+            <div style="color:maroon;background-color:pink;text-align: center">{{ err }}</div>
+                {% endfor %}
+            {% endif %}
+
     <main>
-        <form action="" method="POST">
+        <form action="/request_lease/" method="POST">
             <label for="start-date">Start Date:</label>
             <input type="date" id="start-date" name="start-date">
             <label for="end-date">End Date:</label>

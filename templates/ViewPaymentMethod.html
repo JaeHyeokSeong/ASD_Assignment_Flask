@@ -22,7 +22,7 @@
     <ul class="payment-list">
         {% for payment in all_pay_methods %}
         <li>
-                <span>Card {{ payment[0] }}: *************{{ payment[1] % 1000}}</span>
+                <span>Card {{ payment[0] }}: *************{{ payment[1][-4:]}}</span>
             <div class="button-bar">
                 <form action="/edit_payment" method="post">
                     <input type="hidden" name="payment_id" value="{{ payment[0] }}">

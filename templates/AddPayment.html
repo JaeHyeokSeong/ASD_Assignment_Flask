@@ -14,8 +14,14 @@
         <h1>Add Payment Method</h1>
     </header>
 
+            {% if error %}
+                {% for err in error %}
+            <div style="color:maroon;background-color:pink;text-align: center">{{ err }}</div>
+                {% endfor %}
+            {% endif %}
+
     <main>
-        <form id="add-payment-form" method="POST">
+        <form id="add-payment-form" action="/addpayment" method="POST">
             <label for="card-number">Card Number:</label>
             <input type="text" id="card-number" name="card-number">
 
