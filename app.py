@@ -351,14 +351,6 @@ def delete_properties():
     return redirect(url_for('list_properties'))
 
 
-
-@app.route('/leases')
-def leases():
-    # Logic for leases page
-    return render_template('leases.html')
-
-
-
 @app.route('/inspection',  methods=['GET', 'POST'])
 def inspection():
     user_id = session.get('user_id')

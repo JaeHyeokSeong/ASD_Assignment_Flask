@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+{#BASE IS THE TEMPLATE FOR ALL OTHER PAGES#}
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Default Title{% endblock %}</title>
@@ -71,9 +71,6 @@
                 </div>
                               <div class="menu-item">
                     <a href="{{ url_for('view_requests') }}">View Requests</a>
-                </div>
-                <div class="menu-item">
-                    <a href="{{ url_for('leases') }}">Leases</a>
                 </div>
                 <div class="menu-item">
                     <a href="{{ url_for('inspection') }}">Inspection</a>
