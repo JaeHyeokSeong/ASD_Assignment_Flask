@@ -73,9 +73,6 @@
                     <a href="{{ url_for('view_requests') }}">View Requests</a>
                 </div>
                 <div class="menu-item">
-                    <a href="{{ url_for('leases') }}">Leases</a>
-                </div>
-                <div class="menu-item">
                     <a href="{{ url_for('inspection') }}">Inspection</a>
                 </div>
             {% elif session['user_type'] == 'landlord' %}
