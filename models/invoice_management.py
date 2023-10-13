@@ -37,7 +37,7 @@ class Invoice:
         self.mydb.commit()
 
     def get_property_by_id(self, property_id):
-        select_query = "SELECT * FROM property WHERE property_id = %s"
+        select_query = "SELECT * FROM properties WHERE property_id = %s"
         parameter_data = (property_id,)
         self.mycursor.execute(select_query, parameter_data)
         property = self.mycursor.fetchone()
