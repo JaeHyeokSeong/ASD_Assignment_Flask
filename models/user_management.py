@@ -7,17 +7,20 @@ class UserManagement:
         self.mycursor = mycursor
         self.mydb = mydb
 
+    # Method to add user to Database
     def add_user_to_database(self, random_id, name, email, user_type, password, phone):
         insert_query = "INSERT INTO users (id, name, email, userType, password, phone) VALUES (%s, %s, %s, %s, %s, %s)"
         parameter_data = (random_id, name, email, user_type, password, phone)
         self.mycursor.execute(insert_query, parameter_data)
         self.mydb.commit()
 
+    # Fetches the data from the users Database
     def get_user_info_from_database(self, user_id):
         self.mycursor.execute("SELECT name, email, phone, password FROM users WHERE id = %s", (user_id,))
         user_data = self.mycursor.fetchone()
         return user_data
 
+    # This method authenticates the user when he loggs in
     def authenticate_user(self, email, password, user_type):
         try:
             sql_query = "SELECT id FROM users WHERE email = %s AND password = %s AND userType = %s"
@@ -33,6 +36,7 @@ class UserManagement:
             print("Database Error:", e)
             return None
 
+    # This methods updates data in the database
     def update_user_info_in_database(self, user_id, new_name, new_email, new_phone, new_password):
         try:
             select_query = "SELECT name, email, phone, password FROM users WHERE id = %s"
@@ -54,6 +58,7 @@ class UserManagement:
         except Exception as e:
             print("Database Error:", e)
 
+    # Generates random ID for new users
     def generate_random_id(self):
         random_id_string = ''.join(random.choices(string.ascii_letters + string.digits, k=4))
         random_id_integer = int(random_id_string, 36)
