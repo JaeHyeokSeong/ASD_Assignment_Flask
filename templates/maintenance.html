@@ -40,8 +40,27 @@ input, textarea {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+.buttons a {
+            text-decoration: none;
+            background-color: #555;
+            color: #fff;
+            border-radius: 5px;
+            padding: 12px;
+            display: inline-block;
+            width: 130px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-button {
+        .buttons a:hover {
+            background-color: #777;
+        }
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.center button {
     align-items: center;
     background-color: #000;
     color: #fff;
@@ -51,35 +70,15 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.center button:hover {
     background-color: #333;
 }
 
-.buttons a {
-            text-decoration: none;
-            background-color: #555;
-            color: #fff;
-            border-radius: 5px;
-            padding: 10px;
-            display: inline-block;
-            width: 120px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .buttons a:hover {
-            background-color: #777;
-        }
-
-.center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
     </style>
 </head>
 <body>
    <h1>Complain Report</h1>
+
      <div class="buttons">
         <button> <a class="goto-maintenances" href="/maintenances"><br>View All Maintenance</a></button>
             </div>
