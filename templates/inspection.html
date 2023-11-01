@@ -38,14 +38,14 @@ input, textarea {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
- .buttons a {
+.buttons a {
             text-decoration: none;
             background-color: #555;
             color: #fff;
             border-radius: 5px;
-            padding: 10px;
+            padding: 12px;
             display: inline-block;
-            width: 120px;
+            width: 130px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
@@ -53,15 +53,38 @@ input, textarea {
         .buttons a:hover {
             background-color: #777;
         }
-
-button:hover {
-    background-color: #333;
-}
-
 .center {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.center button {
+    align-items: center;
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.center button:hover {
+    background-color: #333;
+}
+.select-dropdown {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    color: #333;
+    transition: border-color 0.2s;
+}
+
+.select-dropdown:focus {
+    border-color: #007bff;
+    outline: none;
 }
     </style>
 </head>
@@ -72,14 +95,24 @@ button:hover {
             </div>
 
     <form action = "/inspection" method="POST" onsubmit="myalert()">
-        <div class="form-group">
-            <label for="property_id">Property ID:</label>
-        <input type="text" name="property_id" required><br><br>
-        </div>
-        <div class="form-group">
-             <label for="tenant_id">Tenant ID:</label>
-        <input type="text" name="tenant_id"><br><br>
-        </div>
+       <div class="form-group">
+            <label for="p_id">Property ID:</label>
+            <select name="p_id" id="p_id" required class="select-dropdown">
+               <option value="">Select Property ID:</option>
+               {% for property_id in property_ids %}
+                  <option value="{{ property_id[0] }}">{{ property_id[0] }}</option>
+               {% endfor %}
+            </select>
+         </div>
+      <div class="form-group">
+            <label for="t_id">Tenant ID:</label>
+            <select name="t_id" id="t_id" required class="select-dropdown">
+               <option value="">Select Tenant ID:</option>
+               {% for tenant_id in tenant_ids %}
+                  <option value="{{ tenant_id[0] }}">{{ tenant_id[0] }}</option>
+               {% endfor %}
+            </select>
+         </div>
         <div class="form-group">
              <label for="inspection_date">Inspection Date:</label>
         <input type="date"  id="date" name="inspection_date" required><br><br>

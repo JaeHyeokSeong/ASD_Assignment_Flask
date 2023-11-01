@@ -73,46 +73,62 @@ input, textarea {
 .center button:hover {
     background-color: #333;
 }
+.select-dropdown {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    color: #333;
+    transition: border-color 0.2s;
+}
+
+.select-dropdown:focus {
+    border-color: #007bff;
+    outline: none;
+}
 
     </style>
 </head>
 <body>
    <h1>Complain Report</h1>
 
-     <div class="buttons">
-        <button> <a class="goto-maintenances" href="/maintenances"><br>View All Maintenance</a></button>
-            </div>
-<main>
+   <div class="buttons">
+      <button><a class="goto-maintenances" href="/maintenances"><br>View All Maintenance</a></button>
+   </div>
 
-    <form action="/maintenance" method="POST" onsubmit="myalert()">
-        <div class="form-group">
-            <label for="pname">Property ID:</label>
-            <input type="text" name="p_id" id="p_id" required>
-        </div>
-        <div class="form-group">
+   <main>
+       <form action = "/maintenance" method="POST" onsubmit="myalert()">
+         <div class="form-group">
+            <label for="p_id">Property ID:</label>
+            <select name="p_id" id="p_id" required class="select-dropdown">
+               <option value="">Select Property ID:</option>
+               {% for property_id in property_ids %}
+                  <option value="{{ property_id[0] }}">{{ property_id[0] }}</option>
+               {% endfor %}
+            </select>
+         </div>
+         <div class="form-group">
             <label for="issue">Complaint Issue :</label>
             <input type="text" name="issue" id="issue" required>
-        </div>
-        <div class="form-group">
-            <label for="complain">Complain Description:</label>
+         </div>
+         <div class="form-group">
+            <label for="complain">Complaint Description:</label>
             <textarea name="complain" id="complain" rows="10" cols="30" required></textarea>
-        </div>
+         </div>
 
-{#             <p> Submit Reference File: </p>#}
-{#            <form action="/action_page.php">#}
-{#                <input type="file" id="myFile" name="filename">#}
-{#            </form>#}
-        <div class="center">
+         <div class="center">
             <button type="submit" class="submit-button">Submit</button>
-        </div>
-    </form>
-</main>
-   <script>
-    function myalert() {
-        alert("Maintenance Report Submitted");
-    }
-</script>
-</body>
+         </div>
+      </form>
+   </main>
 
+   <script>
+      function myalert() {
+         alert("Maintenance Report Submitted");
+      }
+   </script>
+</body>
 </html>
 {% endblock %}

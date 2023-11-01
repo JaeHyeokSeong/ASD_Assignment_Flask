@@ -72,9 +72,15 @@
                               <div class="menu-item">
                     <a href="{{ url_for('view_requests') }}">View Requests</a>
                 </div>
+
                 <div class="menu-item">
                     <a href="{{ url_for('inspection') }}">Inspection</a>
                 </div>
+
+                 <div class="menu-item">
+                    <a href="{{ url_for('maintenances') }}"> View Maintenance Request</a>
+                </div>
+
             {% elif session['user_type'] == 'landlord' %}
                 <!-- Menu items for Landlord -->
                 <div class="menu-item">
