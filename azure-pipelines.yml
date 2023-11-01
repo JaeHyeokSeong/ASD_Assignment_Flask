@@ -50,7 +50,7 @@ stages:
   jobs:
   - deployment: Deploy
     pool:
-      vmImage: 'ubuntu-20.84'
+      vmImage: 'ubuntu-latest'
     environment: dev
     variables:
     - group: Release
