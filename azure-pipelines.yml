@@ -24,11 +24,8 @@ stages:
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/drop.zip'
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
+    - publish: $(Build.ArtifactStagingDirectory)/drop.zip
+      artifact: drop # Publish the ZIP archive as an artifact
 
 - stage: Test
   jobs:
