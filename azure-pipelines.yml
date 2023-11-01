@@ -65,5 +65,5 @@ stages:
             inputs:
               azureSubscription: 'Property Management System'
               appName: '$(webAppName)'
-              package: '$(Pipeline.Workspace)/drop/*.zip'
+              package: '$(Pipeline.Workspace)/drop/*'
 
