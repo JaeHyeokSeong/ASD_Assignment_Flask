@@ -1,7 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for, session, jsonify
 from flask_session import Session
-from flask_mail import Mail, Message
-
 import mysql.connector
 from models.user_management import UserManagement
 from models.property_catalogue_management import PropertyCatalogue
