@@ -60,9 +60,10 @@ stages:
           steps:
           - download: current
             artifact: drop
-          - task: AzurewebApp@1
+          - task: AzureWebApp@1  # Note the corrected task name
             displayName: 'Azure App Service Deploy: website'
             inputs:
               azureSubscription: 'Property Management System'
               appName: '$(webAppName)'
-              package: '$(Build.ArtifactStagingDirectory)'
+              package: '$(Pipeline.Workspace)/drop/*.zip'
+
