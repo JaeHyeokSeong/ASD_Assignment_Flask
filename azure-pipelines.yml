@@ -13,17 +13,22 @@ stages:
 - stage: Build
   jobs:
   - job: BuildJob
-    displayName: 'Build and Test'
+    displayName: 'Build and Package'
     steps:
     - task: CopyFiles@2
       inputs:
-        targetFolder: '$(Build.ArtifactStagingDirectory)'
+        targetFolder: '$(Build.ArtifactStagingDirectory)/drop'
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/drop'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/drop.zip'
     - task: PublishBuildArtifacts@1
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
-        zipAfterPublish: true
 
 - stage: Test
   jobs:
