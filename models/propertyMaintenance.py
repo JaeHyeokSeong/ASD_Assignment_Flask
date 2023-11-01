@@ -15,11 +15,19 @@ class propertyMaintenance:
         self.mycursor.execute(insert_query, parameter_data)
         self.mydb.commit()
 
-    def get_maintenance_info_from_database(self, tenant_id):
+    def get_tenant_maintenance_info_from_database(self, tenant_id):
         # Execute SQL query to retrieve user data by ID
         self.mycursor.execute(
             "SELECT  maintenance_id, property_id, tenant_id, agent_id, issue, issue_description, created_at FROM maintenance WHERE tenant_id = %s",
             (tenant_id,))
+        maintenance_data = self.mycursor.fetchall()
+        return maintenance_data
+
+    def get_agent_maintenance_info_from_database(self, agent_id):
+        # Execute SQL query to retrieve user data by ID
+        self.mycursor.execute(
+            "SELECT  maintenance_id, property_id, tenant_id, agent_id, issue, issue_description, created_at FROM maintenance WHERE agent_id = %s",
+            (agent_id,))
         maintenance_data = self.mycursor.fetchall()
         return maintenance_data
 

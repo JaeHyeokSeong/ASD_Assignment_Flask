@@ -78,7 +78,7 @@
                 </div>
 
                  <div class="menu-item">
-                    <a href="{{ url_for('maintenances') }}"> View Maintenance Request</a>
+                    <a href="{{ url_for('AgentMaintenances') }}"> View Maintenance Request</a>
                 </div>
 
             {% elif session['user_type'] == 'landlord' %}
@@ -124,6 +124,10 @@
                <div class="menu-item">
                     <a href="{{ url_for('lease_management') }}">Lease Management</a>
                 </div>
+                <div class="menu-item">
+                    <a href="{{ url_for('tenant_inspections') }}">View Inspections</a>
+                </div>
+
                 <div class="menu-item">
                     <a href="{{ url_for('maintenance') }}">Maintenance</a>
                 </div>

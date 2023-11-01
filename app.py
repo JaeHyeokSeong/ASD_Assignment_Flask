@@ -373,10 +373,19 @@ def inspection():
 @app.route('/inspections', methods=['GET'])
 def inspections():
     user_id = session.get('user_id')
-    inspection_infos = property_inspection.get_inspection_info_from_database(user_id)
+    inspection_infos = property_inspection.get_agent_inspection_info_from_database(user_id)
     print("Fetched inspections info:", inspection_infos)
 
     return render_template('inspections.html', inspection_infos=inspection_infos)
+
+@app.route('/tenant_inspections', methods=['GET'])
+def tenant_inspections():
+    user_id = session.get('user_id')
+    inspection_infos = property_inspection.get_tenant_inspection_info_from_database(user_id)
+    print("Fetched inspections info:", inspection_infos)
+
+    return render_template('tenant_inspections.html', inspection_infos=inspection_infos)
+
 
 
 @app.route('/income')
@@ -769,10 +778,17 @@ def maintenance():
 @app.route('/maintenances', methods=['GET'])
 def maintenances():
     user_id = session.get('user_id')  # Get user ID from session or None if not present
-    maintenance_infos = property_maintenance.get_maintenance_info_from_database(user_id)
+    maintenance_infos = property_maintenance.get_tenant_maintenance_info_from_database(user_id)
     print("Fetched maintenance info:", maintenances)
 
     return render_template('maintenances.html', maintenance_infos=maintenance_infos)
+@app.route('/AgentMaintenances', methods=['GET'])
+def  AgentMaintenances():
+    user_id = session.get('user_id')  # Get user ID from session or None if not present
+    maintenance_infos = property_maintenance.get_agent_maintenance_info_from_database(user_id)
+    print("Fetched maintenance info:", AgentMaintenances)
+
+    return render_template('AgentMaintenances.html', maintenance_infos=maintenance_infos)
 
 
 @app.route('/logout')

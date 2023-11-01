@@ -28,13 +28,19 @@ class TestPropertyMaintenance(unittest.TestCase):
         )
         self.mock_db.commit.assert_called()
 
-    def test_get_maintenance_info_from_database(self):
+    def test_get_tenant_maintenance_info_from_database(self):
         tenant_id = 2  # Replace with your tenant_id
         self.mock_cursor.fetchall.return_value = [("123", 1, 2, 3, "Issue", "Description", "2023-10-12")]
 
-        result = self.property_maintenance.get_maintenance_info_from_database(tenant_id)
+        result = self.property_maintenance.get_tenant_maintenance_info_from_database(tenant_id)
         self.assertEqual(result, [("123", 1, 2, 3, "Issue", "Description", "2023-10-12")])
 
+    def test_get_agent_maintenance_info_from_database(self):
+        agent_id = 2  # Replace with your tenant_id
+        self.mock_cursor.fetchall.return_value = [("123", 1, 2, 3, "Issue", "Description", "2023-10-12")]
+
+        result = self.property_maintenance.get_agent_maintenance_info_from_database(agent_id)
+        self.assertEqual(result, [("123", 1, 2, 3, "Issue", "Description", "2023-10-12")])
     def test_generate_random_id(self):
         random_id = self.property_maintenance.generate_random_id()
         self.assertIsInstance(random_id, int)
