@@ -46,6 +46,13 @@ class LeaseApplication:
         lease_application = self.mycursor.fetchall()
         return lease_application
 
+    def get_lease_application_by_property_approved(self, property_id):
+        select_query = "SELECT * FROM leaseApplication WHERE property_id = %s AND status = 'Approved'"
+        parameter_data = (property_id,)
+        self.mycursor.execute(select_query, parameter_data)
+        lease_application = self.mycursor.fetchall()
+        return lease_application
+
 
 
 
