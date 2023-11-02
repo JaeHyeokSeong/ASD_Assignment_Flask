@@ -772,7 +772,6 @@ def maintenance():
         submission_successful = True
 
     return render_template('maintenance.html', property_ids=property_ids, submission_successful=submission_successful)
-    # Logic for maintenance page
 
 
 @app.route('/maintenances', methods=['GET'])
