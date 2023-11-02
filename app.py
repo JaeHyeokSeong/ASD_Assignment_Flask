@@ -594,6 +594,7 @@ def pay():
     pay_id = request.form['payment_id']
     invoice_id = request.form['invoice_id']
     invoice_management.pay_invoice(invoice_id)
+    invoice_management.add_income(invoice_id)
     return render_template('PaymentSuccess.html',)
 
 @app.route('/payment_history', methods=['GET','POST'])
@@ -617,6 +618,8 @@ def request_lease(apply_property_id):
             error.append("You have entered an invalid date.")
         if len(description) < 1:
             error.append("Please enter a description.")
+        if not no_clash_lease(startDate, endDate, apply_property_id):
+            error.append("The dates selected have been booked by another tenant.")
         if not error:
             leaseapplication_management.add_lease_application(startDate,endDate,status,description,apply_property_id,tenant_id)
             return redirect('/lease_application_success')
@@ -639,6 +642,22 @@ def is_valid_date_range(start_date_str, end_date_str):
         pass  # Handle parsing errors
 
     return False
+
+def no_clash_lease(start_date_str, end_date_str, property_id):
+    try:
+        dates_to_check = leaseapplication_management.get_lease_application_by_property_approved(property_id)
+        # Parse start and end dates with the format "YYYY-MM-DD"
+        start_date = datetime.strptime(start_date_str, "%Y-%m-%d").date()
+        end_date = datetime.strptime(end_date_str, "%Y-%m-%d").date()
+        for date in dates_to_check:
+            existing_start_date = date[1]
+            existing_end_date = date[2]
+            # Check if the new booking clashes with any existing booking
+            if (start_date <= existing_end_date) and (end_date >= existing_start_date):
+                return False  # There is a clash
+    except ValueError:
+        pass  # Handle parsing errors
+    return True
 
 @app.route('/lease_application_success')
 def lease_application_success():
