@@ -10,7 +10,7 @@ class propertyMaintenance:
 
     def add_maintenance_to_database(self, random_id, property_id, tenant_id, issue, issue_description):
         agent_id = self.find_agent_id_for_property(property_id)
-        insert_query = "INSERT INTO maintenance (maintenance_id,property_id, tenant_id, agent_id, issue, issue_description) VALUES (%s, %s, %s, %s, %s, %s)"
+        insert_query = "INSERT INTO maintenance (maintenance_id, property_id, tenant_id, agent_id, issue, issue_description) VALUES (%s, %s, %s, %s, %s, %s)"
         parameter_data = (random_id, property_id, tenant_id, agent_id, issue, issue_description)
         self.mycursor.execute(insert_query, parameter_data)
         self.mydb.commit()
