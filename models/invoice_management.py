@@ -1,3 +1,4 @@
+from datetime import datetime
 class Invoice:
     def __init__(self, mycursor, mydb):
         self.mycursor = mycursor
@@ -46,5 +47,18 @@ class Invoice:
         update_query = "UPDATE invoice SET status = %s WHERE invoice_id = %s"
         parameter_data = ("Paid", invoice_id)
         self.mycursor.execute(update_query, parameter_data)
+        self.mydb.commit()
+
+    def add_income(self, invoice_id):
+        select_query = "SELECT * FROM invoice WHERE invoice_id = %s"
+        parameter_data = (invoice_id,)
+        self.mycursor.execute(select_query, parameter_data)
+        details = self.mycursor.fetchone()
+        insert_query = "INSERT INTO income (date, amount, property_id) VALUES (%s, %s, %s)"
+        current_date = datetime.now().date()
+        # Format the date as "YYYY-MM-DD"
+        formatted_date = current_date.strftime("%Y-%m-%d")
+        param_data = (formatted_date, details[2], details[4])
+        self.mycursor.execute(insert_query, param_data)
         self.mydb.commit()
 
