@@ -30,10 +30,10 @@ class propertyInspection:
         return random_id_integer
 
     def find_property_id_from_agent(self, agent_id):
-        self.mycursor.execute("SELECT property_id FROM property WHERE agent_id = %s", (agent_id,))
+        self.mycursor.execute("SELECT property_id FROM properties WHERE agent_id = %s", (agent_id,))
         inspection_data = self.mycursor.fetchall()
         return inspection_data
     def find_tenant_id_from_agent(self, agent_id):
-        self.mycursor.execute("SELECT tenant_id FROM property WHERE agent_id = %s", (agent_id,))
+        self.mycursor.execute("SELECT tenant_id FROM properties WHERE agent_id = %s", (agent_id,))
         inspection_data = self.mycursor.fetchall()
         return inspection_data

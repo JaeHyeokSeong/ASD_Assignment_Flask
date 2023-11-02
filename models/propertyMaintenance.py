@@ -37,12 +37,12 @@ class propertyMaintenance:
         return random_id_integer;
 
     def find_property_id_from_tenant(self, tenant_id):
-        self.mycursor.execute("SELECT property_id FROM property WHERE tenant_id = %s", (tenant_id,))
+        self.mycursor.execute("SELECT property_id FROM properties WHERE tenant_id = %s", (tenant_id,))
         maintenance_data = self.mycursor.fetchall()
         return maintenance_data
 
     def find_agent_id_for_property(self, property_id):
-        self.mycursor.execute("SELECT agent_id FROM property WHERE property_id = %s", (property_id,))
+        self.mycursor.execute("SELECT agent_id FROM properties WHERE property_id = %s", (property_id,))
         agent_data = self.mycursor.fetchone()
         if agent_data:
             return agent_data[0]
