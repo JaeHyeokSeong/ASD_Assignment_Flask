@@ -120,6 +120,12 @@ def index():
 
 @app.route('/home')
 def home():
+    user_id = session.get('user_id')
+
+    # Check if user_id is missing or empty, and redirect to login.html if needed
+    if not user_id:
+        return redirect(url_for('login'))
+
     return render_template('home.html')
 
 
